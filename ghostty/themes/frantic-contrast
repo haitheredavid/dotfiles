@@ -1,0 +1,25 @@
+# Frantic Contrast (rainglow, daylerees) — dark only
+# Ported from daylerees.rainglow-1.5.2/themes/frantic-contrast.json
+# ANSI widened: theme's own ansi* collapse green/magenta/yellow/cyan.
+background = #0e1114
+foreground = #aeb9c4
+cursor-color = #ffffff
+cursor-text = #0e1114
+selection-background = #592d2e
+selection-foreground = #ffffff
+palette = 0=#181e23
+palette = 1=#e61f44
+palette = 2=#a7da1e
+palette = 3=#f7b83d
+palette = 4=#89a7bc
+palette = 5=#968cea
+palette = 6=#70c2ad
+palette = 7=#bdc6cf
+palette = 8=#576a7d
+palette = 9=#ef6462
+palette = 10=#c1e561
+palette = 11=#ffe792
+palette = 12=#bed0e2
+palette = 13=#afa9e5
+palette = 14=#9bd4c6
+palette = 15=#e6eaef
