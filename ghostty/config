@@ -1,0 +1,19 @@
+# Frantic Contrast (rainglow), dark only. Theme file: ~/.config/ghostty/themes/frantic-contrast
+# bg #0e1114 == helix frantic_contrast ui.background == tmux prefix+B opaque bg.
+theme = frantic-contrast
+# Window chrome follows terminal colors (no longer switching with macOS appearance).
+window-theme = ghostty
+# Matches VS Code terminal font; Nerd Font glyphs used by tmux status bar.
+font-family = MesloLGS NF
+
+# ---------- transparency / frosted glass ----------
+# toggle_background_opacity only works when background-opacity < 1.
+# Window STARTS transparent; the hotkey flips it to solid and back.
+background-opacity = 0.82
+background-blur = 20
+
+# ---------- hotkeys ----------
+# cmd+shift+O  "on top": pin window above all others (toggle)
+keybind = super+shift+o=toggle_window_float_on_top
+# cmd+shift+B  "blur": frosted glass <-> solid (toggle)
+keybind = super+shift+b=toggle_background_opacity

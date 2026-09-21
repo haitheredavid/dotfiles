@@ -1,0 +1,190 @@
+# Frantic Contrast — ported from rainglow (daylerees) VS Code theme
+# Source: daylerees.rainglow-1.5.2/themes/frantic-contrast.json
+
+# ---- syntax ----
+"attribute" = { fg = "steel" }
+"comment" = { fg = "comment", modifiers = ["italic"] }
+"comment.documentation" = { fg = "comment" }
+
+"constant" = { fg = "steel" }
+"constant.builtin" = { fg = "steel" }
+"constant.character" = { fg = "steel" }
+"constant.character.escape" = { fg = "lavender" }
+"constant.numeric" = { fg = "lavender" }
+"constructor" = { fg = "steel" }
+
+"function" = { fg = "white" }
+"function.builtin" = { fg = "steel" }
+"function.method" = { fg = "white" }
+"function.macro" = { fg = "coral" }
+"function.special" = { fg = "coral" }
+
+"keyword" = { fg = "coral" }
+"keyword.control" = { fg = "coral" }
+"keyword.control.import" = { fg = "coral" }
+"keyword.operator" = { fg = "coral" }
+"keyword.function" = { fg = "coral" }
+"keyword.storage" = { fg = "coral" }
+"keyword.storage.type" = { fg = "coral" }
+"keyword.storage.modifier" = { fg = "steel" }
+"keyword.directive" = { fg = "keyword_other" }
+
+"label" = { fg = "coral" }
+"module" = { fg = "steel" }
+"namespace" = { fg = "steel" }
+"operator" = { fg = "fg" }
+"punctuation" = { fg = "fg" }
+"punctuation.bracket" = { fg = "fg" }
+"punctuation.delimiter" = { fg = "fg" }
+"punctuation.special" = { fg = "coral" }
+"special" = { fg = "lavender" }
+
+"string" = { fg = "lavender_light" }
+"string.regexp" = { fg = "lavender" }
+"string.special" = { fg = "lavender" }
+"string.special.url" = { fg = "coral", modifiers = ["underlined"] }
+"string.special.symbol" = { fg = "steel" }
+
+"tag" = { fg = "coral" }
+"tag.builtin" = { fg = "coral" }
+
+"type" = { fg = "steel" }
+"type.builtin" = { fg = "steel" }
+"type.enum.variant" = { fg = "steel" }
+"type.parameter" = { fg = "steel", modifiers = ["italic"] }
+
+"variable" = { fg = "fg" }
+"variable.builtin" = { fg = "steel" }
+"variable.parameter" = { fg = "fg_bright" }
+"variable.other.member" = { fg = "fg_bright" }
+
+# ---- markup ----
+"markup.heading" = { fg = "steel", modifiers = ["bold"] }
+"markup.heading.marker" = { fg = "coral" }
+"markup.bold" = { fg = "coral", modifiers = ["bold"] }
+"markup.italic" = { fg = "coral", modifiers = ["italic"] }
+"markup.strikethrough" = { modifiers = ["crossed_out"] }
+"markup.list" = { fg = "coral" }
+"markup.list.checked" = { fg = "green" }
+"markup.list.unchecked" = { fg = "muted" }
+"markup.link.url" = { fg = "coral", modifiers = ["underlined"] }
+"markup.link.text" = { fg = "coral" }
+"markup.link.label" = { fg = "steel" }
+"markup.quote" = { fg = "keyword_other", modifiers = ["italic"] }
+"markup.raw" = { fg = "lavender_light" }
+"markup.raw.inline" = { fg = "lavender_light" }
+"markup.raw.block" = { fg = "lavender_light" }
+
+# ---- diff ----
+"diff.plus" = { fg = "green" }
+"diff.minus" = { fg = "red" }
+"diff.delta" = { fg = "yellow" }
+"diff.delta.moved" = { fg = "lavender" }
+"diff.plus.gutter" = { fg = "green" }
+"diff.minus.gutter" = { fg = "red" }
+"diff.delta.gutter" = { fg = "yellow" }
+
+# ---- diagnostics ----
+"error" = { fg = "red" }
+"warning" = { fg = "yellow" }
+"info" = { fg = "violet" }
+"hint" = { fg = "steel" }
+"diagnostic.error" = { underline = { color = "red", style = "curl" } }
+"diagnostic.warning" = { underline = { color = "yellow", style = "curl" } }
+"diagnostic.info" = { underline = { color = "violet", style = "curl" } }
+"diagnostic.hint" = { underline = { color = "steel", style = "curl" } }
+"diagnostic.unnecessary" = { modifiers = ["dim"] }
+"diagnostic.deprecated" = { modifiers = ["crossed_out"] }
+
+# ---- ui ----
+"ui.background" = { bg = "bg", fg = "fg" }
+"ui.background.separator" = { fg = "gutter_fg" }
+"ui.text" = { fg = "fg" }
+"ui.text.focus" = { fg = "white", bg = "bg_focus" }
+"ui.text.inactive" = { fg = "muted" }
+"ui.text.info" = { fg = "fg" }
+"ui.text.directory" = { fg = "steel" }
+
+"ui.cursor" = { fg = "bg", bg = "fg_dim" }
+"ui.cursor.primary" = { fg = "bg", bg = "pure_white" }
+"ui.cursor.primary.normal" = { fg = "bg", bg = "pure_white" }
+"ui.cursor.primary.insert" = { fg = "bg", bg = "green" }
+"ui.cursor.primary.select" = { fg = "pure_white", bg = "coral" }
+"ui.cursor.match" = { bg = "match", underline = { color = "steel", style = "line" } }
+
+"ui.selection" = { bg = "sel_dim" }
+"ui.selection.primary" = { bg = "sel" }
+"ui.cursorline.primary" = { bg = "bg_line" }
+"ui.cursorline.secondary" = { bg = "bg_line" }
+"ui.cursorcolumn.primary" = { bg = "bg_line" }
+"ui.gutter.selected" = { bg = "bg_line" }
+"ui.linenr" = { fg = "gutter_fg" }
+"ui.linenr.selected" = { fg = "fg", modifiers = ["bold"] }
+
+"ui.statusline" = { fg = "fg", bg = "bg_panel" }
+"ui.statusline.inactive" = { fg = "muted", bg = "bg_tab" }
+"ui.statusline.normal" = { fg = "bg", bg = "steel", modifiers = ["bold"] }
+"ui.statusline.insert" = { fg = "bg", bg = "green", modifiers = ["bold"] }
+"ui.statusline.select" = { fg = "pure_white", bg = "coral", modifiers = ["bold"] }
+"ui.statusline.separator" = { fg = "gutter_fg" }
+
+"ui.bufferline" = { fg = "muted2", bg = "bg_tab" }
+"ui.bufferline.active" = { fg = "white", bg = "bg", modifiers = ["bold"] }
+"ui.bufferline.background" = { bg = "bg_line" }
+
+"ui.popup" = { fg = "fg", bg = "bg_widget" }
+"ui.popup.info" = { fg = "fg", bg = "bg_widget" }
+"ui.window" = { fg = "gutter_fg" }
+"ui.help" = { fg = "fg", bg = "bg_widget" }
+"ui.menu" = { fg = "fg", bg = "bg_widget" }
+"ui.menu.selected" = { fg = "white", bg = "gutter_fg", modifiers = ["bold"] }
+"ui.menu.scroll" = { fg = "gutter_fg", bg = "bg_widget" }
+"ui.picker.header.column" = { fg = "muted", underline = { style = "line" } }
+"ui.picker.header.column.active" = { fg = "white", modifiers = ["bold"], underline = { style = "line" } }
+"ui.highlight" = { bg = "bg_focus" }
+"ui.highlight.frameline" = { bg = "match" }
+
+"ui.virtual.whitespace" = { fg = "bg_widget" }
+"ui.virtual.indent-guide" = { fg = "bg_widget" }
+"ui.virtual.ruler" = { bg = "bg_line" }
+"ui.virtual.wrap" = { fg = "bg_widget" }
+"ui.virtual.inlay-hint" = { fg = "muted", modifiers = ["italic"] }
+"ui.virtual.jump-label" = { fg = "find", modifiers = ["bold"] }
+"ui.debug.breakpoint" = { fg = "red" }
+"ui.debug.active" = { fg = "yellow" }
+
+[palette]
+# backgrounds (theme "colors")
+bg = "#0e1114"           # editor.background
+bg_dark = "#0a0c0e"      # editorGutter.background
+bg_line = "#14191d"      # editor.lineHighlightBackground
+bg_tab = "#161b20"       # tab.inactiveBackground
+bg_panel = "#181e23"     # sideBar.background
+bg_widget = "#232a32"    # editorWidget / panel
+bg_focus = "#2d3741"     # list.focusBackground
+gutter_fg = "#384450"    # editorLineNumber.foreground
+# text
+comment = "#44515e"
+muted = "#576a7d"        # panelTitle.inactiveForeground
+muted2 = "#62778c"       # tab.inactiveForeground
+keyword_other = "#64778a"
+fg_dim = "#909fae"
+fg = "#aeb9c4"
+fg_bright = "#bed0e2"    # variable.parameter
+white = "#e6eaef"        # entity.name.function
+pure_white = "#ffffff"
+# accents
+coral = "#ef6462"
+red = "#e61f44"
+green = "#a7da1e"
+yellow = "#f7b83d"
+find = "#ffe792"
+steel = "#89a7bc"
+lavender = "#968cea"
+lavender_light = "#afa9e5"
+violet = "#9d37fc"
+teal = "#70c2ad"
+# composited alphas over bg
+sel = "#592d2e"          # #ef646255
+sel_dim = "#3b2224"      # ~#ef646233
+match = "#4a2729"        # #ef646444 (editorBracketMatch)

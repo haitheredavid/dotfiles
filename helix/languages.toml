@@ -1,0 +1,233 @@
+
+[language-server.ty]
+command = "ty"
+args = ["server"]
+
+[language-server.ruff]
+command = "ruff"
+args = ["server","--preview"]
+
+[language-server.ruff.config.settings]
+ lineLength = 88
+
+
+[language-server.ruff.config.settings.lint]
+select = ["E", "F", "I", "UP"]
+preview = false
+
+[language-server.ruff.config.settings.format]
+preview = false
+
+# ---------------------------------------------------------------------------
+# Python language entry
+# ---------------------------------------------------------------------------
+
+[[language]]
+name = "python"
+language-servers = ["ty", "ruff"]
+formatter = { command = "bash", args = ["-c","ruff check --fix - | ruff format -"] }
+
+# Let ruff handle formatting (ruff format).
+# Disable if you prefer to run `ruff format` outside the editor.
+auto-format = true
+
+# Project root markers — Helix walks up the directory tree to find these.
+# Determines the workspace root passed to each language server.
+roots = [
+  "pyproject.toml",
+  "setup.cfg",
+  "setup.py",
+  "uv.lock",
+  ".python-version",
+  ".git",
+]
+
+indent = { tab-width = 4, unit = "    " }
+# xxbelix/languages.toml  (append to your existing file, or merge sections)
+
+# vtsls — TypeScript/JavaScript: completions, hover, go-to-def, diagnostics,
+# rename, imports. A fast LSP wrapper around the VSCode TS extension.
+[language-server.vtsls]
+command = "vtsls"
+args = ["--stdio"]
+
+[language-server.vtsls.config]
+hostInfo = "helix"
+
+[language-server.vtsls.config.typescript]
+# Auto-update imports when files are renamed via LSP
+updateImportsOnFileMove = { enabled = "always" }
+suggest = { completeFunctionCalls = true }
+# Use the workspace's local typescript install when present (e.g. bun projects)
+# Falls back to vtsls's bundled TypeScript when not found.
+# Set autoUseWorkspaceTsdk = true if you want to strictly prefer the project's version.
+# autoUseWorkspaceTsdk = true
+
+[language-server.vtsls.config.javascript]
+updateImportsOnFileMove = { enabled = "always" }
+suggest = { completeFunctionCalls = true }
+
+# eslint — linting diagnostics and code actions (fix-all, disable-rule, etc.)
+# Provided by vscode-langservers-extracted (vscode-eslint-language-server).
+[language-server.eslint]
+command = "vscode-eslint-language-server"
+args = ["--stdio"]
+
+[language-server.eslint.config]
+# Validate on every keystroke. Change to "onSave" if it feels slow.
+run = "onType"
+validate = "on"
+experimental = {}
+problems = { shortenToSingleLine = false }
+quiet = false
+nodePath = ""
+rulesCustomizations = []
+
+# codeActionsOnSave is recognised by some editors but eslint LSP itself
+# triggers fixes via code-action requests — use <space>a in helix to apply.
+[language-server.eslint.config.codeAction.disableRuleComment]
+enable = true
+location = "separateLine"
+
+[language-server.eslint.config.codeAction.showDocumentation]
+enable = false
+
+# ---------------------------------------------------------------------------
+# Language entries
+# ---------------------------------------------------------------------------
+
+# Shared roots — Helix walks up to find the workspace root.
+# Covers Vite (vite.config.*), Bun (bun.lock / bunfig.toml), and standard TS projects.
+
+[[language]]
+name = "typescript"
+language-servers = [
+  "vtsls",
+  { name = "eslint", except-features = ["format"] },
+]
+auto-format = true
+roots = [
+  "tsconfig.json",
+  "jsconfig.json",
+  "package.json",
+  "bun.lock",
+  "bunfig.toml",
+  "vite.config.ts",
+  "vite.config.js",
+  ".git",
+]
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "tsx"
+language-servers = [
+  "vtsls",
+  { name = "eslint", except-features = ["format"] },
+]
+auto-format = true
+roots = [
+  "tsconfig.json",
+  "jsconfig.json",
+  "package.json",
+  "bun.lock",
+  "bunfig.toml",
+  "vite.config.ts",
+  "vite.config.js",
+  ".git",
+]
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "javascript"
+language-servers = [
+  "vtsls",
+  { name = "eslint", except-features = ["format"] },
+]
+auto-format = true
+roots = [
+  "tsconfig.json",
+  "jsconfig.json",
+  "package.json",
+  "bun.lock",
+  "bunfig.toml",
+  "vite.config.ts",
+  "vite.config.js",
+  ".git",
+]
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "jsx"
+language-servers = [
+  "vtsls",
+  { name = "eslint", except-features = ["format"] },
+]
+auto-format = true
+roots = [
+  "tsconfig.json",
+  "jsconfig.json",
+  "package.json",
+  "bun.lock",
+  "bunfig.toml",
+  "vite.config.ts",
+  "vite.config.js",
+  ".git",
+]
+indent = { tab-width = 2, unit = "  " }
+
+# ---------------------------------------------------------------------------
+# Lua / LÖVE — lua-language-server.
+# LÖVE globals + API defs come from the project .luarc.json (auto-read from
+# the workspace root). Keep a .luarc.json per LÖVE project; see rg40xxv-game.
+# ---------------------------------------------------------------------------
+[language-server.lua-language-server]
+command = "lua-language-server"
+
+[[language]]
+name = "lua"
+language-servers = ["lua-language-server"]
+# Walk up to these to find the workspace root (so .luarc.json is found).
+roots = [".luarc.json", "main.lua", "conf.lua", ".git"]
+indent = { tab-width = 4, unit = "    " }
+
+# ---------------------------------------------------------------------------
+# Markdown / MDX
+# ---------------------------------------------------------------------------
+# marksman handles plain markdown — Helix wires it by default once installed
+# (brew install marksman), no [[language]] override needed.
+
+# mdx-language-server (@mdx-js/language-server, installed via bun) — Volar-based,
+# needs a TypeScript SDK path to power JSX/ESM intelligence inside .mdx files.
+[language-server.mdx-language-server]
+command = "mdx-language-server"
+args = ["--stdio"]
+
+[language-server.mdx-language-server.config]
+typescript = { enabled = true, tsdk = "/Users/david/.bun/install/global/node_modules/typescript/lib" }
+
+# Helix has no built-in mdx language — define one reusing the markdown grammar
+# for highlighting.
+[[language]]
+name = "mdx"
+scope = "source.mdx"
+injection-regex = "mdx"
+file-types = ["mdx"]
+grammar = "markdown"
+language-servers = ["mdx-language-server"]
+roots = ["package.json", "tsconfig.json", ".git"]
+block-comment-tokens = { start = "{/*", end = "*/}" }
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "hcl"
+language-servers = ["terraform-ls"]
+auto-format = true
+formatter = { command = "terraform", args = ["fmt", "-"] }
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "tfvars"
+language-servers = ["terraform-ls"]
+auto-format = true
+formatter = { command = "terraform", args = ["fmt", "-"] }
+indent = { tab-width = 2, unit = "  " }
