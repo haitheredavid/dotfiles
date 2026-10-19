@@ -1,57 +1,44 @@
 #!/usr/bin/env bash
-# Symlink dotfiles into place. Existing regular files are backed up to <path>.bak.<timestamp>.
-# Idempotent: re-running replaces symlinks, skips ones already pointing here.
+# Stow every package into $HOME (file-level links, --no-folding).
+# Anything already occupying a package path that isn't our link is moved to
+# ~/.dotfiles-backup/<timestamp>/<path> first. Idempotent.
 set -euo pipefail
 
 DOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TS="$(date +%Y%m%d%H%M%S)"
+PACKAGES=(zsh tmux helix ghostty omp claude agents)
+BACKUP="$HOME/.dotfiles-backup/$(date +%Y%m%d%H%M%S)"
 
-link() {
-  local src="$DOT/$1" dst="$2"
-  mkdir -p "$(dirname "$dst")"
-  if [[ -L "$dst" && "$(readlink "$dst")" == "$src" ]]; then
-    echo "ok      $dst"; return
-  fi
-  if [[ -e "$dst" && ! -L "$dst" ]]; then
-    mv "$dst" "$dst.bak.$TS"; echo "backup  $dst -> $dst.bak.$TS"
-  fi
-  ln -sfn "$src" "$dst"; echo "link    $dst -> $src"
-}
+command -v stow >/dev/null || { echo "stow not found: brew install stow" >&2; exit 1; }
 
-# zsh (ZDOTDIR=~/.config/zsh is set in ~/.zshenv)
-link zshenv                 "$HOME/.zshenv"
-link zsh/zshrc              "$HOME/.config/zsh/.zshrc"
-link zsh/zprofile           "$HOME/.config/zsh/.zprofile"
-link zsh/p10k.zsh           "$HOME/.config/zsh/.p10k.zsh"
-link zsh/completions        "$HOME/.config/zsh/completions"
+for pkg in "${PACKAGES[@]}"; do
+  while IFS= read -r -d '' src; do
+    rel="${src#"$DOT/$pkg/"}"
+    dst="$HOME/$rel"
+    [[ -e "$dst" || -L "$dst" ]] || continue
+    [[ -L "$dst" && "$(readlink "$dst")" == *"/${DOT##*/}/$pkg/$rel" ]] && continue
+    mkdir -p "$(dirname "$BACKUP/$rel")"
+    mv "$dst" "$BACKUP/$rel"
+    echo "backup  ~/$rel -> $BACKUP/$rel"
+  done < <(find "$DOT/$pkg" \( -type f -o -type l \) ! -name .DS_Store -print0)
+done
 
-# tmux
-link tmux/tmux.conf         "$HOME/.tmux.conf"
-link tmux/load.sh           "$HOME/.tmux/load.sh"
-link tmux/git-branch.sh     "$HOME/.tmux/git-branch.sh"
+stow --dir "$DOT" --target "$HOME" --no-folding --ignore '\.DS_Store' --restow -v "${PACKAGES[@]}"
 
-# helix
-link helix/config.toml      "$HOME/.config/helix/config.toml"
-link helix/languages.toml   "$HOME/.config/helix/languages.toml"
-link helix/sync-theme.sh    "$HOME/.config/helix/sync-theme.sh"
-link helix/themes           "$HOME/.config/helix/themes"
-link helix/runtime          "$HOME/.config/helix/runtime"
+# ctx-scaffold skill presets live in the ctx checkout (absolute link, so stow can't own it)
+CTX_PRESETS="$HOME/suffolk/ctx/presets"
+[[ -d "$CTX_PRESETS" ]] && ln -sfn "$CTX_PRESETS" "$HOME/.claude/skills/ctx-scaffold/presets"
 
-# ghostty (XDG config + macOS App Support config; both are loaded)
-link ghostty/config         "$HOME/.config/ghostty/config"
-link ghostty/themes         "$HOME/.config/ghostty/themes"
-link ghostty/config.app-support "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
-
-# launchagent: helix theme sync (needs real $HOME path, so render instead of link)
+# launchagent: helix theme sync (launchd needs absolute paths, so render instead of link)
 PLIST="$HOME/Library/LaunchAgents/com.user.helix-theme-sync.plist"
 mkdir -p "$(dirname "$PLIST")"
 sed "s#\$HOME#$HOME#g" "$DOT/launchagents/com.user.helix-theme-sync.plist" > "$PLIST"
 echo "render  $PLIST"
 
+# oh-my-zsh: stock clone; the official installer would overwrite .zshrc
+[[ -d "$HOME/.oh-my-zsh" ]] || git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh"
+
 # tmux plugin manager
-if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
-  git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
-fi
+[[ -d "$HOME/.tmux/plugins/tpm" ]] || git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 
 echo
 echo "Done. Next:"
