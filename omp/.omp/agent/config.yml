@@ -1,0 +1,57 @@
+modelRoles:
+  default: anthropic/claude-opus-5-5
+symbolPreset: ascii
+composer:
+  shape: box
+theme:
+  light: dark-tundra
+  dark: dark-tundra
+setupVersion: 2
+display:
+  showTokenUsage: true
+  showTurnTime: true
+  cacheMissMarker: true
+  subagentLivePreview: false
+  hideToolActivity: true
+statusLine:
+  preset: custom
+  leftSegments:
+    - model
+    - time_spent
+    - cache_hit
+    - git
+  rightSegments:
+    - status
+  separator: pipe
+  transparent: true
+  contextLine: percentage
+  showHookStatus: false
+  sessionAccent: false
+tui:
+  autoGraph: smart
+  tight: false
+  vimMode: true
+  vimModeDisplay: text
+advisor:
+  enabled: false
+  maxNotesPerUpdate: 2
+steeringMode: all
+tools:
+  approvalMode: yolo
+vault:
+  enabled: true
+dev:
+  autoqaConsent: granted
+hideThinkingBlock: true
+recap:
+  enabled: false
+personality: pragmatic
+compaction:
+  handoffSaveToDisk: false
+bash:
+  allowCompoundCommands: true
+proseOnlyThinking: true
+includeModelInPrompt: false
+followUpMode: one-at-a-time
+collab:
+  displayName: dmo

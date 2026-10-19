@@ -1,0 +1,131 @@
+{
+  "version": 3,
+  "skills": {
+    "caveman": {
+      "source": "JuliusBrussee/caveman",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/JuliusBrussee/caveman.git",
+      "skillPath": "caveman/SKILL.md",
+      "skillFolderHash": "825e13085d1515fe67881b2123f3bf9b34c26154",
+      "installedAt": "2026-04-12T03:39:19.105Z",
+      "updatedAt": "2026-04-12T03:39:19.105Z"
+    },
+    "caveman-commit": {
+      "source": "JuliusBrussee/caveman",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/JuliusBrussee/caveman.git",
+      "skillPath": "skills/caveman-commit/SKILL.md",
+      "skillFolderHash": "f8d14c8de94e55b43de62b4b3081230248e2f481",
+      "installedAt": "2026-04-12T03:39:19.297Z",
+      "updatedAt": "2026-04-12T03:39:19.297Z"
+    },
+    "caveman-compress": {
+      "source": "JuliusBrussee/caveman",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/JuliusBrussee/caveman.git",
+      "skillPath": "caveman-compress/SKILL.md",
+      "skillFolderHash": "85fc4f66717ab4f24a5b8d72fab3641b6be37a5f",
+      "installedAt": "2026-04-12T03:39:19.483Z",
+      "updatedAt": "2026-04-12T03:39:19.483Z"
+    },
+    "caveman-help": {
+      "source": "JuliusBrussee/caveman",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/JuliusBrussee/caveman.git",
+      "skillPath": "skills/caveman-help/SKILL.md",
+      "skillFolderHash": "0456947ac9539b1f8cba536f3b7a19d7a0f4eb91",
+      "installedAt": "2026-04-12T03:39:19.665Z",
+      "updatedAt": "2026-04-12T03:39:19.665Z"
+    },
+    "caveman-review": {
+      "source": "JuliusBrussee/caveman",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/JuliusBrussee/caveman.git",
+      "skillPath": "skills/caveman-review/SKILL.md",
+      "skillFolderHash": "2147719da5f81255dbf960d6ce46d5a7ee9d0860",
+      "installedAt": "2026-04-12T03:39:19.856Z",
+      "updatedAt": "2026-04-12T03:39:19.856Z"
+    },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/skills.git",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "skillFolderHash": "3013fdeb8a11b10b1eb795ec3ae8bfca38f7c26d",
+      "installedAt": "2026-04-12T03:39:23.735Z",
+      "updatedAt": "2026-04-12T03:39:23.735Z"
+    },
+    "writing-plans": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/obra/superpowers.git",
+      "skillPath": "skills/writing-plans/SKILL.md",
+      "skillFolderHash": "8fe8e8b6ee9e5cbe53cb172a36f0dc31f9875847",
+      "installedAt": "2026-05-29T03:56:28.322Z",
+      "updatedAt": "2026-05-29T03:56:28.322Z"
+    },
+    "executing-plans": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/obra/superpowers.git",
+      "skillPath": "skills/executing-plans/SKILL.md",
+      "skillFolderHash": "7c20d2bd7ff7b166ea3064e21b1e5f0455750878",
+      "installedAt": "2026-05-29T03:56:30.250Z",
+      "updatedAt": "2026-05-29T03:56:30.250Z"
+    },
+    "subagent-driven-development": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/obra/superpowers.git",
+      "skillPath": "skills/subagent-driven-development/SKILL.md",
+      "skillFolderHash": "73b43347c1bdc10f6ab81a5cdb036dd1c8098cc0",
+      "installedAt": "2026-05-29T03:56:32.025Z",
+      "updatedAt": "2026-05-29T03:56:32.025Z"
+    },
+    "verification-before-completion": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/obra/superpowers.git",
+      "skillPath": "skills/verification-before-completion/SKILL.md",
+      "skillFolderHash": "ceb2f1f67f4cadb29b32a06e54d3d0be832071f5",
+      "installedAt": "2026-05-29T03:56:33.885Z",
+      "updatedAt": "2026-05-29T03:56:33.885Z"
+    },
+    "planning-with-files": {
+      "source": "othmanadi/planning-with-files",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/othmanadi/planning-with-files.git",
+      "skillPath": "skills/planning-with-files/SKILL.md",
+      "skillFolderHash": "08b72ad8c5d5343cb54cfe2faa0b4dcb5f3a13aa",
+      "installedAt": "2026-05-29T03:56:36.099Z",
+      "updatedAt": "2026-05-29T03:56:36.099Z"
+    },
+    "plan-mode": {
+      "source": "vercel-labs/open-agents",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/open-agents.git",
+      "skillPath": ".agents/skills/plan-mode/SKILL.md",
+      "skillFolderHash": "68f8ca8735b0539b76227428d2ced75233b870e7",
+      "installedAt": "2026-05-29T03:56:38.390Z",
+      "updatedAt": "2026-05-29T03:56:38.390Z"
+    }
+  },
+  "dismissed": {
+    "findSkillsPrompt": true
+  },
+  "lastSelectedAgents": [
+    "amp",
+    "cline",
+    "codex",
+    "cursor",
+    "droid",
+    "gemini-cli",
+    "github-copilot",
+    "kilo",
+    "kimi-code-cli",
+    "opencode",
+    "pi",
+    "warp",
+    "zed"
+  ]
+}
