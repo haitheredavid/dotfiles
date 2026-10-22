@@ -19,6 +19,7 @@ statusLine:
     - model
     - time_spent
     - cache_hit
+    - path
     - git
   rightSegments:
     - status
