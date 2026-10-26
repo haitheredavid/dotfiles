@@ -1,4 +1,21 @@
-theme = "frantic_contrast_transparent"
+theme = "dark_tundra_transparent"
+
+# Chrome mirrors ~/.tmux.conf / omp status line: flat coloured text, `|` separators.
+[editor]
+bufferline = "multiple"
+color-modes = true
+popup-border = "all"
+
+[editor.statusline]
+separator = "|"
+left = ["mode", "separator", "file-name", "read-only-indicator", "file-modification-indicator"]
+center = []
+right = ["spinner", "diagnostics", "separator", "spacer", "version-control", "spacer", "separator", "selections", "register", "position", "separator", "file-type"]
+
+[editor.statusline.mode]
+normal = "normal"
+insert = "insert"
+select = "select"
 
 [editor.soft-wrap]
 enable = true

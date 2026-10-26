@@ -4,8 +4,8 @@
 
 set -eu
 
-DARK_THEME="${HELIX_DARK_THEME:-frantic_contrast_transparent}"
-LIGHT_THEME="${HELIX_LIGHT_THEME:-frantic_contrast_transparent}"
+DARK_THEME="${HELIX_DARK_THEME:-dark_tundra_transparent}"
+LIGHT_THEME="${HELIX_LIGHT_THEME:-dark_tundra_transparent}"
 CONFIG="${HELIX_CONFIG:-$HOME/.config/helix/config.toml}"
 
 if defaults read -g AppleInterfaceStyle >/dev/null 2>&1; then

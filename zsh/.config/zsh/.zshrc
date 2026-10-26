@@ -62,6 +62,7 @@ alias blender='/Applications/Blender.app/Contents/MacOS/Blender'
 alias love='/Applications/love.app/Contents/MacOS/love'
 alias cm='csl multi && claude'
 alias cs='csl single && claude'
+alias pano='panoptes'
 
 # ---------- functions ----------
 ipy(){

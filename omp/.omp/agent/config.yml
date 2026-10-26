@@ -43,7 +43,7 @@ vault:
   enabled: true
 dev:
   autoqaConsent: granted
-hideThinkingBlock: true
+hideThinkingBlock: false
 recap:
   enabled: false
 personality: pragmatic
@@ -56,3 +56,6 @@ includeModelInPrompt: false
 followUpMode: one-at-a-time
 collab:
   displayName: dmo
+defaultThinkingLevel: medium
+claudeResets:
+  autoRedeem: "yes"

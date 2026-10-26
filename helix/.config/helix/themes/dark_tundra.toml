@@ -1,0 +1,182 @@
+# dark-tundra — Helix port of omp's dark-tundra theme (theme.dark), styled to match ~/.tmux.conf.
+# Syntax follows omp's syntax* colors; chrome follows tmux: flat coloured text, coldBorder `|`
+# separators, auroraGreen accent, glacierBlue messages/menus, coldBorder selection.
+
+# ---- syntax ----
+"attribute" = { fg = "warningGold" }
+"comment" = { fg = "dimIce", modifiers = ["italic"] }
+"comment.documentation" = { fg = "dimIce" }
+
+"constant" = { fg = "iceWhite" }
+"constant.builtin" = { fg = "warningGold" }
+"constant.character" = { fg = "successGreen" }
+"constant.character.escape" = { fg = "cyan" }
+"constant.numeric" = { fg = "warningGold" }
+"constructor" = { fg = "warningGold" }
+
+"function" = { fg = "warningGold" }
+"function.builtin" = { fg = "warningGold" }
+"function.method" = { fg = "warningGold" }
+"function.macro" = { fg = "warningGold", modifiers = ["italic"] }
+"function.special" = { fg = "warningGold" }
+
+"keyword" = { fg = "auroraGreen" }
+"keyword.control" = { fg = "auroraGreen" }
+"keyword.control.import" = { fg = "auroraGreen" }
+"keyword.operator" = { fg = "auroraGreen" }
+"keyword.function" = { fg = "auroraGreen" }
+"keyword.storage" = { fg = "auroraGreen" }
+"keyword.storage.type" = { fg = "auroraGreen" }
+"keyword.storage.modifier" = { fg = "auroraGreen" }
+"keyword.directive" = { fg = "mutedIce" }
+
+"label" = { fg = "auroraGreen" }
+"module" = { fg = "iceWhite" }
+"namespace" = { fg = "iceWhite" }
+"operator" = { fg = "mutedIce" }
+"punctuation" = { fg = "mutedIce" }
+"punctuation.bracket" = { fg = "mutedIce" }
+"punctuation.delimiter" = { fg = "mutedIce" }
+"punctuation.special" = { fg = "auroraGreen" }
+"special" = { fg = "auroraGreen" }
+
+"string" = { fg = "successGreen" }
+"string.regexp" = { fg = "cyan" }
+"string.special" = { fg = "cyan" }
+"string.special.url" = { fg = "auroraGreen", modifiers = ["underlined"] }
+"string.special.symbol" = { fg = "warningGold" }
+
+"tag" = { fg = "auroraGreen" }
+"tag.builtin" = { fg = "auroraGreen" }
+
+"type" = { fg = "auroraGreen" }
+"type.builtin" = { fg = "auroraGreen" }
+"type.enum.variant" = { fg = "iceWhite" }
+"type.parameter" = { fg = "auroraGreen", modifiers = ["italic"] }
+
+"variable" = { fg = "iceWhite" }
+"variable.builtin" = { fg = "auroraGreen", modifiers = ["italic"] }
+"variable.parameter" = { fg = "iceWhite" }
+"variable.other.member" = { fg = "iceWhite" }
+
+# ---- markup (omp md* colors) ----
+"markup.heading" = { fg = "iceWhite", modifiers = ["bold"] }
+"markup.heading.marker" = { fg = "auroraGreen" }
+"markup.bold" = { fg = "iceWhite", modifiers = ["bold"] }
+"markup.italic" = { fg = "iceWhite", modifiers = ["italic"] }
+"markup.strikethrough" = { modifiers = ["crossed_out"] }
+"markup.list" = { fg = "auroraGreen" }
+"markup.list.checked" = { fg = "successGreen" }
+"markup.list.unchecked" = { fg = "dimIce" }
+"markup.link.url" = { fg = "dimIce", modifiers = ["underlined"] }
+"markup.link.text" = { fg = "auroraGreen" }
+"markup.link.label" = { fg = "auroraGreen" }
+"markup.quote" = { fg = "mutedIce", modifiers = ["italic"] }
+"markup.raw" = { fg = "iceWhite" }
+"markup.raw.inline" = { fg = "iceWhite" }
+"markup.raw.block" = { fg = "auroraGreen" }
+
+# ---- diff ----
+"diff.plus" = { fg = "successGreen" }
+"diff.minus" = { fg = "errorRed" }
+"diff.delta" = { fg = "warningGold" }
+"diff.delta.moved" = { fg = "blue" }
+"diff.plus.gutter" = { fg = "successGreen" }
+"diff.minus.gutter" = { fg = "errorRed" }
+"diff.delta.gutter" = { fg = "warningGold" }
+
+# ---- diagnostics ----
+"error" = { fg = "errorRed" }
+"warning" = { fg = "warningGold" }
+"info" = { fg = "blue" }
+"hint" = { fg = "dimIce" }
+"diagnostic.error" = { underline = { color = "errorRed", style = "curl" } }
+"diagnostic.warning" = { underline = { color = "warningGold", style = "curl" } }
+"diagnostic.info" = { underline = { color = "blue", style = "curl" } }
+"diagnostic.hint" = { underline = { color = "dimIce", style = "curl" } }
+"diagnostic.unnecessary" = { modifiers = ["dim"] }
+"diagnostic.deprecated" = { modifiers = ["crossed_out"] }
+
+# ---- ui ----
+"ui.background" = { bg = "frostBlack", fg = "iceWhite" }
+"ui.background.separator" = { fg = "coldBorder" }
+"ui.text" = { fg = "iceWhite" }
+"ui.text.focus" = { fg = "iceWhite", bg = "glacierBlue", modifiers = ["bold"] }
+"ui.text.inactive" = { fg = "dimIce" }
+"ui.text.info" = { fg = "mutedIce" }
+"ui.text.directory" = { fg = "auroraGreen" }
+
+# Cursor colour tracks the statusline mode colour.
+"ui.cursor" = { fg = "frostBlack", bg = "mutedIce" }
+"ui.cursor.primary" = { fg = "frostBlack", bg = "iceWhite" }
+"ui.cursor.primary.normal" = { fg = "frostBlack", bg = "auroraGreen" }
+"ui.cursor.primary.insert" = { fg = "frostBlack", bg = "warningGold" }
+"ui.cursor.primary.select" = { fg = "frostBlack", bg = "magenta" }
+"ui.cursor.match" = { bg = "permafrost", underline = { color = "auroraGreen", style = "line" } }
+
+# tmux mode-style: coldBorder / iceWhite.
+"ui.selection" = { bg = "permafrost" }
+"ui.selection.primary" = { bg = "coldBorder", fg = "iceWhite" }
+"ui.cursorline.primary" = { bg = "iceCave" }
+"ui.cursorline.secondary" = { bg = "iceCave" }
+"ui.cursorcolumn.primary" = { bg = "iceCave" }
+"ui.gutter.selected" = { bg = "iceCave" }
+"ui.linenr" = { fg = "coldBorder" }
+"ui.linenr.selected" = { fg = "auroraGreen", modifiers = ["bold"] }
+
+# tmux status bar: chrome bg (opaque variant), mutedIce text, bold accent for the mode
+# like `#S`, coldBorder `|` separators, dimIce when inactive.
+"ui.statusline" = { fg = "mutedIce", bg = "chrome" }
+"ui.statusline.inactive" = { fg = "dimIce", bg = "chrome" }
+"ui.statusline.normal" = { fg = "auroraGreen", bg = "chrome", modifiers = ["bold"] }
+"ui.statusline.insert" = { fg = "warningGold", bg = "chrome", modifiers = ["bold"] }
+"ui.statusline.select" = { fg = "magenta", bg = "chrome", modifiers = ["bold"] }
+"ui.statusline.separator" = { fg = "coldBorder" }
+
+# tmux window list: dimIce inactive, accent+bold current.
+"ui.bufferline" = { fg = "dimIce", bg = "chrome" }
+"ui.bufferline.active" = { fg = "auroraGreen", bg = "chrome", modifiers = ["bold"] }
+"ui.bufferline.background" = { bg = "chrome" }
+
+# tmux message-style / omp selectedBg: glacierBlue; split + popup borders coldBorder.
+"ui.popup" = { fg = "iceWhite", bg = "iceCave" }
+"ui.popup.info" = { fg = "iceWhite", bg = "iceCave" }
+"ui.window" = { fg = "coldBorder" }
+"ui.help" = { fg = "iceWhite", bg = "iceCave" }
+"ui.menu" = { fg = "mutedIce", bg = "iceCave" }
+"ui.menu.selected" = { fg = "iceWhite", bg = "glacierBlue", modifiers = ["bold"] }
+"ui.menu.scroll" = { fg = "coldBorder", bg = "iceCave" }
+"ui.picker.header" = { fg = "dimIce" }
+"ui.picker.header.column" = { fg = "dimIce", underline = { style = "line" } }
+"ui.picker.header.column.active" = { fg = "auroraGreen", modifiers = ["bold"], underline = { style = "line" } }
+"ui.highlight" = { bg = "glacierBlue" }
+"ui.highlight.frameline" = { bg = "permafrost" }
+
+"ui.virtual.whitespace" = { fg = "glacierBlue" }
+"ui.virtual.indent-guide" = { fg = "glacierBlue" }
+"ui.virtual.ruler" = { bg = "iceCave" }
+"ui.virtual.wrap" = { fg = "coldBorder" }
+"ui.virtual.inlay-hint" = { fg = "dimIce", modifiers = ["italic"] }
+"ui.virtual.jump-label" = { fg = "warningGold", modifiers = ["bold"] }
+"ui.debug.breakpoint" = { fg = "errorRed" }
+"ui.debug.active" = { fg = "warningGold" }
+
+[palette]
+# omp dark-tundra vars
+frostBlack = "#0B0F12"
+chrome = "#080B0E"       # statusLineBg / terminal.chrome
+iceCave = "#11171C"
+glacierBlue = "#172028"
+permafrost = "#1E2A34"
+coldBorder = "#2A3A46"
+iceWhite = "#E3E9F0"
+mutedIce = "#A3B0BF"
+dimIce = "#667381"
+auroraGreen = "#66D1A1"
+successGreen = "#5FB487"
+warningGold = "#D0B04D"
+errorRed = "#D26B6B"
+# omp dark-tundra terminal.ansi extras
+blue = "#6C9FD6"
+magenta = "#B08FD2"
+cyan = "#5FBFCF"

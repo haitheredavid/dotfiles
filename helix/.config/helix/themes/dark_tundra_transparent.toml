@@ -1,0 +1,15 @@
+# dark-tundra with bg=default editor, statusline and bufferline, matching tmux's transparent
+# mode so Ghostty's background-opacity shows through. Popups/menus stay opaque like tmux messages.
+inherits = "dark_tundra"
+
+"ui.background" = { fg = "iceWhite" }
+
+"ui.statusline" = { fg = "mutedIce" }
+"ui.statusline.inactive" = { fg = "dimIce" }
+"ui.statusline.normal" = { fg = "auroraGreen", modifiers = ["bold"] }
+"ui.statusline.insert" = { fg = "warningGold", modifiers = ["bold"] }
+"ui.statusline.select" = { fg = "magenta", modifiers = ["bold"] }
+
+"ui.bufferline" = { fg = "dimIce" }
+"ui.bufferline.active" = { fg = "auroraGreen", modifiers = ["bold"] }
+"ui.bufferline.background" = {}
