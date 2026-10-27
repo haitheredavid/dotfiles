@@ -19,7 +19,9 @@ Each top-level directory is a stow package whose tree mirrors `$HOME`:
 | `launchagents/` (not a package) | `~/Library/LaunchAgents/` (rendered with real `$HOME`) |
 
 Not tracked: app state/history/caches, Claude plugins (reinstalled from `enabledPlugins` in
-`settings.json`), databricks/mlflow skills (installed by their own tooling), tmux plugins (tpm).
+`settings.json`), databricks/mlflow skills (installed by their own tooling), tmux plugin checkouts
+(the `@plugin` list lives in `tmux/.tmux.conf`; `install.sh` installs them via tpm). The sidebar
+plugin uses `tree` and tome uses `nvim`/`vim` (`brew install tree neovim`).
 
 ## Install
 

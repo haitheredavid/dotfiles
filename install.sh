@@ -37,8 +37,9 @@ echo "render  $PLIST"
 # oh-my-zsh: stock clone; the official installer would overwrite .zshrc
 [[ -d "$HOME/.oh-my-zsh" ]] || git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh"
 
-# tmux plugin manager
+# tmux plugin manager + the @plugin list in tmux/.tmux.conf (no running server needed)
 [[ -d "$HOME/.tmux/plugins/tpm" ]] || git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+"$HOME/.tmux/plugins/tpm/bin/install_plugins"
 
 echo
 echo "Done. Next:"
