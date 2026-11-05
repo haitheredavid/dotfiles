@@ -10,6 +10,7 @@ fpath=("$ZDOTDIR/completions" "$HOME/.docker/completions" $fpath)
 # $ZDOTDIR/completions holds hand-generated files for tools OMZ lacks a plugin for:
 #   just --completions zsh > $ZDOTDIR/completions/_just
 #   databricks completion zsh > $ZDOTDIR/completions/_databricks
+#   herdr completion zsh > $ZDOTDIR/completions/_herdr
 # regenerate after upgrading those tools.
 
 # ---------- oh-my-zsh ----------

@@ -1,7 +1,7 @@
 # dotfiles
 
-macOS terminal + agent setup — zsh + oh-my-zsh + powerlevel10k, tmux, helix, ghostty, omp, Claude
-Code, shared agent skills — managed with [GNU Stow](https://www.gnu.org/software/stow/).
+macOS terminal + agent setup — zsh + oh-my-zsh + powerlevel10k, tmux, helix, ghostty, herdr, omp,
+Claude Code, shared agent skills — managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
 ## Layout
 
@@ -13,6 +13,7 @@ Each top-level directory is a stow package whose tree mirrors `$HOME`:
 | `tmux` | `~/.tmux.conf`, `~/.tmux/*.sh` |
 | `helix` | `~/.config/helix/` |
 | `ghostty` | `~/.config/ghostty/`, `~/Library/Application Support/com.mitchellh.ghostty/config` |
+| `herdr` | `~/.config/herdr/config.toml` (sockets, logs, session state stay untracked). Claude hook from `herdr integration install claude` lives in `claude` (`hooks/herdr-agent-state.sh` + `settings.json` entry); rerun it after upgrading herdr |
 | `omp` | `~/.omp/agent/config.yml`, `~/.omp/agent/extensions/` |
 | `claude` | `~/.claude/{CLAUDE.md,settings.json,statusline-command.sh,hooks/}`, personal skills, links into `agents` skills |
 | `agents` | `~/.agents/skills/` + `.skill-lock.json` (third-party skills from the `skills` CLI) |
@@ -37,18 +38,19 @@ git clone git@github.com:haitheredavid/dotfiles.git ~/projects/dotfiles
 `~/suffolk/ctx` when present, and clones oh-my-zsh and tpm if missing. Idempotent; re-run after
 adding a file to a package.
 
-Apps that save settings by replacing the file (Claude Code / omp settings UIs) can swap a symlink
-for a plain file. Detect, then pull the app's version into the repo and relink:
+Apps that save settings by replacing the file (Claude Code / omp settings UIs, herdr's settings
+screen and onboarding, herdr integration installs) can swap a symlink for a plain file. Detect, then
+pull the app's version into the repo and relink:
 
 ```sh
-stow -n -d ~/projects/dotfiles -t ~ --no-folding -v claude omp   # lists replaced files as conflicts
-stow    -d ~/projects/dotfiles -t ~ --no-folding --adopt claude omp && git -C ~/projects/dotfiles diff
+stow -n -d ~/projects/dotfiles -t ~ --no-folding -v claude omp herdr   # lists replaced files as conflicts
+stow    -d ~/projects/dotfiles -t ~ --no-folding --adopt claude omp herdr && git -C ~/projects/dotfiles diff
 ```
 
 ### Dependencies (Homebrew)
 
 ```sh
-brew install stow tmux helix zoxide fzf uv powerlevel10k zsh-autosuggestions zsh-syntax-highlighting
+brew install stow tmux helix zoxide fzf uv herdr powerlevel10k zsh-autosuggestions zsh-syntax-highlighting
 brew install --cask ghostty font-meslo-lg-nerd-font
 ```
 
@@ -61,6 +63,7 @@ Regenerate completions after upgrading the tools:
 ```sh
 just --completions zsh > ~/.config/zsh/completions/_just
 databricks completion zsh > ~/.config/zsh/completions/_databricks
+herdr completion zsh > ~/.config/zsh/completions/_herdr
 ```
 
 ## Themes
@@ -83,5 +86,6 @@ ghostty and helix use **Frantic Contrast**, ported from the `daylerees.rainglow`
 ## Keybinds worth remembering
 
 - tmux prefix `C-a`; `=` / `-` split; `h j k l` navigate; `H J K L` resize; `e` equalize; `9` / `0` prev/next session; `W` promote window to session; `A` claude agents sidebar; `B` opaque toggle; `r` reload
+- herdr prefix `C-s` (default `C-b`); `v` / `-` split; `c` new tab; `n` / `p` next/prev tab; `w` workspaces; `q` detach; `s` settings; `?` all bindings
 - ghostty `cmd+shift+o` float on top, `cmd+shift+b` opacity, global `cmd+\`` quick terminal
 - helix `space+m` markless preview of the current file, `C-y` yazi
