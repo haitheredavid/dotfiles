@@ -31,6 +31,15 @@ case "${1:-}" in
   open)
     ensure "$2" "$PWD"
     ft set-option -g @float_origin "$PWD"
+    # The main server ($TMUX) repaints the whole popup, border included, on every status-bar
+    # redraw: each status-interval tick plus each #() job finishing, 3 repaints every 5s here,
+    # which flickers. Pause status refresh while the popup is open. The stash skips 0 so a
+    # second popup opened meanwhile can't save the paused value.
+    interval=$(tmux show-options -gv status-interval)
+    [ "$interval" = 0 ] || tmux set-option -g @float_status_interval "$interval"
+    tmux set-option -g status-interval 0
+    trap 'tmux set-option -g status-interval "$(tmux show-options -gv @float_status_interval)"' EXIT
+    trap 'exit 1' HUP TERM
     ft attach-session -t "=$2" ;;
   ensure) ensure "$2" "${3:-$PWD}" ;;
   *) echo "usage: float.sh open <kind> | ensure <kind> [dir]" >&2; exit 1 ;;
