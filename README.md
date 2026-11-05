@@ -21,8 +21,7 @@ Each top-level directory is a stow package whose tree mirrors `$HOME`:
 
 Not tracked: app state/history/caches, Claude plugins (reinstalled from `enabledPlugins` in
 `settings.json`), databricks/mlflow skills (installed by their own tooling), tmux plugin checkouts
-(the `@plugin` list lives in `tmux/.tmux.conf`; `install.sh` installs them via tpm). The sidebar
-plugin uses `tree` (`brew install tree`).
+(the `@plugin` list lives in `tmux/.tmux.conf`; `install.sh` installs them via tpm).
 
 ## Install
 
