@@ -10,7 +10,7 @@ Each top-level directory is a stow package whose tree mirrors `$HOME`:
 | package | installs |
 |---|---|
 | `zsh` | `~/.zshenv` (sets `ZDOTDIR=~/.config/zsh`), `~/.config/zsh/{.zshrc,.zprofile,.p10k.zsh,completions/}` |
-| `tmux` | `~/.tmux.conf`, `~/.tmux/*.sh` |
+| `tmux` | `~/.tmux.conf`, `~/.tmux/*.sh`, `~/.tmux/float.conf` |
 | `helix` | `~/.config/helix/` |
 | `ghostty` | `~/.config/ghostty/`, `~/Library/Application Support/com.mitchellh.ghostty/config` |
 | `herdr` | `~/.config/herdr/config.toml` (sockets, logs, session state stay untracked). Claude hook from `herdr integration install claude` lives in `claude` (`hooks/herdr-agent-state.sh` + `settings.json` entry); rerun it after upgrading herdr |
@@ -22,7 +22,7 @@ Each top-level directory is a stow package whose tree mirrors `$HOME`:
 Not tracked: app state/history/caches, Claude plugins (reinstalled from `enabledPlugins` in
 `settings.json`), databricks/mlflow skills (installed by their own tooling), tmux plugin checkouts
 (the `@plugin` list lives in `tmux/.tmux.conf`; `install.sh` installs them via tpm). The sidebar
-plugin uses `tree` and tome uses `nvim`/`vim` (`brew install tree neovim`).
+plugin uses `tree` (`brew install tree`).
 
 ## Install
 
@@ -86,6 +86,7 @@ ghostty and helix use **Frantic Contrast**, ported from the `daylerees.rainglow`
 ## Keybinds worth remembering
 
 - tmux prefix `C-a`; `=` / `-` split; `h j k l` navigate; `H J K L` resize; `e` equalize; `9` / `0` prev/next session; `W` promote window to session; `A` claude agents sidebar; `B` opaque toggle; `r` reload
+- tmux floating panels, no prefix: `C-8` new de-vault scratch note in helix (`people/david-morgan/scratch/`), `C-9` omp, `C-0` shell. The same key hides the panel (it keeps running) and brings it back; another panel key switches to that panel. They live on a separate `float` tmux server (`tmux -L float ls`)
 - herdr prefix `C-s` (default `C-b`); `v` / `-` split; `c` new tab; `n` / `p` next/prev tab; `w` workspaces; `q` detach; `s` settings; `?` all bindings
 - ghostty `cmd+shift+o` float on top, `cmd+shift+b` opacity, global `cmd+\`` quick terminal
 - helix `space+m` markless preview of the current file, `C-y` yazi

@@ -17,3 +17,8 @@ background-blur = 20
 keybind = super+shift+o=toggle_window_float_on_top
 # cmd+shift+B  "blur": frosted glass <-> solid (toggle)
 keybind = super+shift+b=toggle_background_opacity
+# ctrl+8/9/0  tmux floating panels (scratch note / omp / shell). Plain ctrl+digit has no legacy
+# encoding, so send the CSI u form tmux parses regardless of the negotiated keyboard mode.
+keybind = ctrl+8=csi:56;5u
+keybind = ctrl+9=csi:57;5u
+keybind = ctrl+0=csi:48;5u
