@@ -5,7 +5,7 @@
 set -euo pipefail
 
 DOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PACKAGES=(zsh tmux helix ghostty omp claude agents)
+PACKAGES=(zsh tmux helix ghostty herdr omp claude agents)
 BACKUP="$HOME/.dotfiles-backup/$(date +%Y%m%d%H%M%S)"
 
 command -v stow >/dev/null || { echo "stow not found: brew install stow" >&2; exit 1; }
