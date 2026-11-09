@@ -1,5 +1,6 @@
 # Frantic Contrast (rainglow), dark only. Theme file: ~/.config/ghostty/themes/frantic-contrast
 # bg #0e1114 == helix frantic_contrast ui.background == tmux prefix+B opaque bg.
+# Same ANSI slots as tuios `dark_tundra`; alternative: theme = rose-pine-iris (tuios `rose_pine_iris`).
 theme = frantic-contrast
 # Window chrome follows terminal colors (no longer switching with macOS appearance).
 window-theme = ghostty
@@ -22,3 +23,15 @@ keybind = super+shift+b=toggle_background_opacity
 keybind = ctrl+8=csi:56;5u
 keybind = ctrl+9=csi:57;5u
 keybind = ctrl+0=csi:48;5u
+
+# ---------- splits (opt-based; ghostty eats these before tmux sees them) ----------
+# opt+up/down  focus split above/below (opt+left/right left alone: shell word-jump)
+keybind = alt+arrow_up=goto_split:up
+keybind = alt+arrow_down=goto_split:down
+# opt+shift+arrows  move the divider
+keybind = alt+shift+arrow_up=resize_split:up,20
+keybind = alt+shift+arrow_down=resize_split:down,20
+keybind = alt+shift+arrow_left=resize_split:left,20
+keybind = alt+shift+arrow_right=resize_split:right,20
+# opt+=  equalize splits
+keybind = alt+equal=equalize_splits

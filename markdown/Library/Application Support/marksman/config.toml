@@ -1,0 +1,7 @@
+# marksman user config (macOS reads ~/Library/Application Support/marksman/config.toml).
+# Only overrides; defaults: https://github.com/artempyanykh/marksman/blob/main/Tests/default.marksman.toml
+# A project's .marksman.toml wins over this file.
+
+[completion]
+# Complete [[wiki links]] by file name, the way Obsidian links notes.
+wiki.style = "file-stem"

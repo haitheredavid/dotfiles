@@ -1,0 +1,60 @@
+# Built only from the 16 ANSI slots and the default background, so Helix takes on whichever
+# theme tuios (or Ghostty) paints those slots with. Chrome follows dark_tundra_transparent:
+# flat coloured statusline/bufferline over the pane background.
+# No slot is used as a background: themes disagree on what slot 0/8 are (rose_pine's black is a
+# mid grey), so emphasis comes from reverse video, underlines and popup borders instead.
+inherits = "base16_terminal"
+
+"ui.text" = "light-gray"
+"ui.text.inactive" = "gray"
+"ui.text.directory" = "green"
+"ui.background.separator" = "gray"
+
+"ui.cursor" = { modifiers = ["reversed"] }
+"ui.cursor.primary" = { modifiers = ["reversed"] }
+"ui.cursor.primary.normal" = { fg = "green", modifiers = ["reversed"] }
+"ui.cursor.primary.insert" = { fg = "yellow", modifiers = ["reversed"] }
+"ui.cursor.primary.select" = { fg = "magenta", modifiers = ["reversed"] }
+"ui.cursor.match" = { underline = { color = "green", style = "line" }, modifiers = ["bold"] }
+
+"ui.selection" = { fg = "gray", modifiers = ["reversed"] }
+"ui.selection.primary" = { modifiers = ["reversed"] }
+
+"ui.gutter" = {}
+"ui.linenr" = "gray"
+"ui.linenr.selected" = { fg = "green", modifiers = ["bold"] }
+"ui.virtual.ruler" = {}
+"ui.virtual.whitespace" = "gray"
+"ui.virtual.indent-guide" = "gray"
+"ui.virtual.inlay-hint" = "gray"
+
+"ui.statusline" = "light-gray"
+"ui.statusline.inactive" = "gray"
+"ui.statusline.normal" = { fg = "green", modifiers = ["bold"] }
+"ui.statusline.insert" = { fg = "yellow", modifiers = ["bold"] }
+"ui.statusline.select" = { fg = "magenta", modifiers = ["bold"] }
+"ui.statusline.separator" = "gray"
+
+"ui.bufferline" = "gray"
+"ui.bufferline.active" = { fg = "green", modifiers = ["bold"] }
+"ui.bufferline.background" = {}
+
+# Popups sit on the pane background; config.toml's popup-border = "all" frames them.
+"ui.popup" = "light-gray"
+"ui.help" = "light-gray"
+"ui.window" = "gray"
+"ui.menu" = "light-gray"
+"ui.menu.selected" = { modifiers = ["reversed", "bold"] }
+"ui.menu.scroll" = "gray"
+"ui.picker.header" = "gray"
+"ui.picker.header.column.active" = { fg = "green", modifiers = ["bold"], underline = { style = "line" } }
+
+"comment" = { fg = "gray", modifiers = ["italic"] }
+"hint" = "cyan"
+"info" = "blue"
+"warning" = "yellow"
+"error" = "red"
+"diagnostic.hint" = { underline = { color = "cyan", style = "curl" } }
+"diagnostic.info" = { underline = { color = "blue", style = "curl" } }
+"diagnostic.warning" = { underline = { color = "yellow", style = "curl" } }
+"diagnostic.error" = { underline = { color = "red", style = "curl" } }

@@ -11,6 +11,7 @@ fpath=("$ZDOTDIR/completions" "$HOME/.docker/completions" $fpath)
 #   just --completions zsh > $ZDOTDIR/completions/_just
 #   databricks completion zsh > $ZDOTDIR/completions/_databricks
 #   herdr completion zsh > $ZDOTDIR/completions/_herdr
+#   mise completion zsh > $ZDOTDIR/completions/_mise
 # regenerate after upgrading those tools.
 
 # ---------- oh-my-zsh ----------
@@ -34,22 +35,27 @@ plugins=(
   alias-finder    # on-demand only: `alias-finder <cmd>` (autoload off, no nag)
 )
 source "$ZSH/oh-my-zsh.sh"          # runs compinit once; do not call it again below
+# brew install puts zsh addons under /opt/homebrew/share; the no-brew install clones them into $ZSH/custom
+_src_addon() { local f; for f in "$@"; do [[ -r "$f" ]] && { source "$f"; return; }; done; }
 # ---------- prompt / theme ----------
-source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+_src_addon /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme "$ZSH/custom/themes/powerlevel10k/powerlevel10k.zsh-theme"
 # To customize prompt, run `p10k configure` or edit $ZDOTDIR/.p10k.zsh.
 [[ ! -f "$ZDOTDIR/.p10k.zsh" ]] || source "$ZDOTDIR/.p10k.zsh"
 
 # ---------- PATH / tool homes ----------
 # (ZDOTDIR, VOLTA_HOME, cargo, rover are in ~/.zshenv; brew, docker, obsidian in .zprofile)
-. "$HOME/.local/bin/env"                       # uv / ~/.local/bin
+[[ -r "$HOME/.local/bin/env" ]] && . "$HOME/.local/bin/env"   # uv / ~/.local/bin
 export PATH="$BUN_INSTALL/bin:$PATH"
 export PNPM_HOME="$HOME/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 export PATH="$VOLTA_HOME/bin:$PATH"          # re-prepend so volta shims beat pnpm's bundled node
 # node version: managed by volta. default `volta install node@22`, per-project `volta pin node@22`
+# mise: per-directory tools/env from mise.toml / .tool-versions. Activated last so its tool paths
+# win over everything above; it updates PATH on each prompt/cd (precmd + chpwd hooks).
+# Leave node to volta: don't `mise use node` or the two will fight over which node is first.
+(( $+commands[mise] )) && eval "$(mise activate zsh)"
 
 # ---------- env ----------
-export EDITOR='nvim'
 export OPENCODE_EXPERIMENTAL_WORKSPACES=true   # opencode git-worktree workspaces
 
 #  ---------- aliases ----------
@@ -57,15 +63,43 @@ alias mux='tmuxinator'
 alias oc='opencode'
 alias dbx='databricks'
 alias tf='terraform'
-alias mless='markless'
 alias claudia='claude -p'
 alias blender='/Applications/Blender.app/Contents/MacOS/Blender'
 alias love='/Applications/love.app/Contents/MacOS/love'
 alias cm='csl multi && claude'
 alias cs='csl single && claude'
 alias pano='panoptes'
+alias tui='tuios'
 
 # ---------- functions ----------
+# svg [-c] [files...]: Quick Look (or Chrome with -c); no files → fzf pick under cwd
+svg() {
+  local chrome=0
+  [[ $1 == -c ]] && { chrome=1; shift; }
+  local -a files=("$@")
+  (( $#files )) || files=("${(@f)$(fd -e svg | fzf -m)}")
+  [[ -n ${files[1]} ]] || return 1
+  if (( chrome )); then open -a "Google Chrome" "${files[@]}"
+  else qlmanage -p "${files[@]}" &>/dev/null; fi
+}
+alias svgc='svg -c'
+
+# mdc [files...]: render markdown with pandoc and open in Chrome; no files → fzf pick under cwd
+mdc() {
+  local -a files=("$@") htmls
+  (( $#files )) || files=("${(@f)$(fd -e md | fzf -m)}")
+  [[ -n ${files[1]} ]] || return 1
+  local out="${TMPDIR:-/tmp}/mdc" f html
+  mkdir -p "$out"
+  for f in "${files[@]}"; do
+    html="$out/${f:t:r}.html"
+    pandoc -s --embed-resources --resource-path="${f:A:h}" \
+      --metadata pagetitle="${f:t:r}" -o "$html" "$f" || return
+    htmls+=("$html")
+  done
+  open -a "Google Chrome" "${htmls[@]}"
+}
+
 ipy(){
   local dir="${1:-.}"
   echo "# Init to win it" > "$dir/__init__.py"
@@ -75,6 +109,18 @@ cc-ultra() {
   claude --prompt "/caveman ultra" "$@"
 }
 
+# omp inside the paseo-env container, so sessions land where the Paseo daemon sees them.
+# Only ~/projects and ~/suffolk are mounted (at identical paths).
+ompc() {
+  case "$PWD/" in
+    "$HOME/projects/"*|"$HOME/suffolk/"*) ;;
+    *) echo "ompc: $PWD is not mounted in the paseo container (~/projects, ~/suffolk only)" >&2; return 1 ;;
+  esac
+  local -a flags=(-i -u paseo -w "$PWD" -e TERM -e COLORTERM)
+  [[ -t 0 && -t 1 ]] && flags+=(-t)
+  docker exec "${flags[@]}" paseo omp "$@"
+}
+
 # touch + open in helix (creates parent dirs)
 thx() {
   [[ -z "$1" ]] && { echo "usage: thx <path>" >&2; return 1; }
@@ -82,10 +128,10 @@ thx() {
 }
 alias hxn=thx   # old name
 
-# new spec doc in ~/suffolk/de-vault/people/david-morgan/specs, seeded with the shared frontmatter
+# new spec doc in ~/notes/de-vault/people/david-morgan/specs, seeded with the shared frontmatter
 spec() {
   [[ -z "$1" ]] && { echo "usage: spec <title words>" >&2; return 1; }
-  local dir="$HOME/suffolk/de-vault/people/david-morgan/specs"
+  local dir="$HOME/notes/de-vault/people/david-morgan/specs"
   local name="${*%.md}.md"
   local file="$dir/$name"
   mkdir -p "$dir"
@@ -112,7 +158,7 @@ note() {
   zparseopts -D -E -A opts l: -location: || return 1
   local loc="${opts[-l]:-${opts[--location]:-cwd}}" dir
   case "$loc" in
-    sfk) dir="$HOME/suffolk/de-vault/people/david-morgan/notes" ;;
+    sfk) dir="$HOME/notes/de-vault/people/david-morgan/notes" ;;
     hai) dir="$HOME/notes/haithere/notes" ;;
     cwd) dir="$PWD" ;;
     *)   echo "note: unknown location '$loc' (sfk|hai|cwd)" >&2; return 1 ;;
@@ -133,7 +179,7 @@ notes() {
   zparseopts -D -E -A opts l: -location: || return 1
   local loc="${opts[-l]:-${opts[--location]:-hai}}" dir
   case "$loc" in
-    sfk) dir="$HOME/suffolk/de-vault" ;;
+    sfk) dir="$HOME/notes/de-vault" ;;
     hai) dir="$HOME/notes/haithere" ;;
     cwd) dir="$PWD" ;;
     *)   echo "notes: unknown location '$loc' (sfk|hai|cwd)" >&2; return 1 ;;
@@ -147,6 +193,32 @@ notes() {
   rm -f -- "$tmp"
 }
 compdef '_arguments "(-l --location)"{-l,--location}"[notes location]:location:(sfk hai cwd)" "1:path:_files -/"' notes
+
+# ---------- tuios: name each workspace after the project its focused pane is in ----------
+# The dock shows "3 dotfiles" instead of "3 3". Runs after every prompt, in the background.
+# Only the pane that has focus in its workspace renames it, and a name you set by hand
+# (prefix ,) stays: the hook replaces only a name it wrote. Clear yours to hand it back.
+if [[ -n $TUIOS_WINDOW_ID ]] && (( $+commands[tuios] && $+commands[jq] )); then
+  _tuios_ws_autoname() {
+    local root label ws cur state
+    root=$(git rev-parse --show-toplevel 2>/dev/null) || root=$PWD
+    case $root in
+      $HOME) label='~' ;;
+      /)     label='/' ;;
+      *)     label=${root:t} ;;
+    esac
+    IFS=$'\t' read -r ws cur < <(tuios list-workspaces --json -s "$TUIOS_SESSION" |
+      jq -r --arg w "$TUIOS_WINDOW_ID" '.workspaces[] | select(.focused_window_id == $w) | "\(.workspace)\t\(.name)"')
+    [[ -n $ws && $cur != "$label" ]] || return
+    state="${XDG_STATE_HOME:-$HOME/.local/state}/tuios-wsname/$TUIOS_SESSION-$ws"
+    [[ -z $cur || $cur == "$(<$state)" ]] || return
+    tuios set-workspace-name -s "$TUIOS_SESSION" "$ws" "$label" &&
+      mkdir -p "${state:h}" && print -r -- "$label" > "$state"
+  }
+  _tuios_ws_autoname_bg() { _tuios_ws_autoname >/dev/null 2>&1 &! }
+  autoload -Uz add-zsh-hook
+  add-zsh-hook precmd _tuios_ws_autoname_bg
+fi
 
 # ---------- history (overrides oh-my-zsh lib/history.zsh, which must run first) ----------
 HISTSIZE=50000
@@ -177,8 +249,9 @@ zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcach
 zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm -w'
 
 # ---------- line editing plugins (autosuggestions before highlighting; highlighting LAST) ----------
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+_src_addon /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh "$ZSH/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+_src_addon /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh "$ZSH/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+unfunction _src_addon
 
 # accept just the next word of a suggestion instead of the whole line
 bindkey '^[f' forward-word          # alt-f

@@ -5,8 +5,8 @@ composer:
   shape: box
 theme:
   light: dark-tundra
-  dark: dark-tundra
-setupVersion: 2
+  dark: dark-tundra-contrast
+setupVersion: 3
 display:
   showTokenUsage: true
   showTurnTime: true
@@ -33,6 +33,7 @@ tui:
   tight: false
   vimMode: true
   vimModeDisplay: text
+  resizeScrollback: preserve
 advisor:
   enabled: false
   maxNotesPerUpdate: 2
@@ -59,3 +60,7 @@ collab:
 defaultThinkingLevel: medium
 claudeResets:
   autoRedeem: "yes"
+startup:
+  quiet: true
+update:
+  auto: true

@@ -1,0 +1,80 @@
+html,
+body,
+.github-markdown-body {
+    padding: 0 !important;
+    max-width: auto !important;
+}
+
+.github-markdown-body {
+    background-color: var(--bgColor-default);
+    color: var(--fgColor-default);
+}
+
+.github-markdown-body {
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    margin: 0 auto;
+    width: 100% !important;
+}
+
+.github-markdown-content {
+    padding: 32px !important;
+    max-width: 980px;
+    min-width: 200px;
+    margin: 0 auto;
+}
+
+
+.vscode-body.scrollBeyondLastLine {
+    margin-bottom: 0;
+}
+/*
+ * Other extensions may reuse the markdown render function for embedding additional documents
+ * creating multiple .github-markdown-body elements so this should only apply to the top one
+ */
+.vscode-body.scrollBeyondLastLine > .markdown-body > .github-markdown-body {
+    padding-bottom: calc(100vh + 10px) !important;
+}
+
+.github-markdown-body blockquote {
+    background-color: initial;
+}
+
+.github-markdown-body pre {
+    color: initial;
+    border: none;
+}
+
+.github-markdown-body code {
+    color: inherit;
+}
+
+.github-markdown-body pre code {
+    color: initial;
+}
+
+.github-markdown-body code > div {
+    background: none
+}
+
+.github-markdown-body.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.github-markdown-body p,
+.github-markdown-body blockquote,
+.github-markdown-body ul,
+.github-markdown-body ol,
+.github-markdown-body dl,
+.github-markdown-body table,
+.github-markdown-body pre {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+:is(.vscode-dark, .vscode-light).showEditorSelection .code-active-line:before {
+    border-left: 3px solid var(--borderColor-default);
+}
+:is(.vscode-dark, .vscode-light).showEditorSelection .code-line:hover:before {
+    border-left: 3px solid var(--fgColor-muted);
+}

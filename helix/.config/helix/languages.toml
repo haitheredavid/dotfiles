@@ -194,7 +194,20 @@ indent = { tab-width = 4, unit = "    " }
 # Markdown / MDX
 # ---------------------------------------------------------------------------
 # marksman handles plain markdown — Helix wires it by default once installed
-# (brew install marksman), no [[language]] override needed.
+# (brew install marksman).
+
+# List continuation: Enter / `o` on a line starting with a comment token repeats
+# it (editor.continue-comments, on by default); the longest match wins, so a
+# task line continues as "- [ ]". "*" is left out so **Bold:** lines don't turn
+# into bullets. Side effect: Space+c / Ctrl+c toggle "- " instead of <!-- -->
+# (Space+C still does block comments).
+# Continuation repeats "1." verbatim, so md-renumber (dotfiles/markdown) runs as
+# the formatter and renumbers ordered lists on save (or `:format`).
+[[language]]
+name = "markdown"
+comment-tokens = ["-", "+", "1.", ">", "- [ ]"]
+formatter = { command = "md-renumber" }
+auto-format = true
 
 # mdx-language-server (@mdx-js/language-server, installed via bun) — Volar-based,
 # needs a TypeScript SDK path to power JSX/ESM intelligence inside .mdx files.

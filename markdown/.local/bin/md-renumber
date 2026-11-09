@@ -1,0 +1,67 @@
+#!/usr/bin/awk -f
+# md-renumber: stdin → stdout, renumbers markdown ordered lists sequentially.
+# Helix's markdown formatter (languages.toml), so lists typed as 1. 1. 1. become
+# 1. 2. 3. on save. Each list keeps its first number; nested lists count on their own
+# by indent; fenced code is untouched; every other line passes through byte-for-byte.
+
+function indent_of(s,    i, n, c) {
+  n = 0
+  for (i = 1; i <= length(s); i++) {
+    c = substr(s, i, 1)
+    if (c == " ") n++
+    else if (c == "\t") n += 4 - n % 4
+    else break
+  }
+  return n
+}
+
+# end every open list at indent >= k
+function close_from(k,    d) {
+  for (d in count) if (d + 0 >= k) { delete count[d]; delete delim[d] }
+}
+
+BEGIN { fence = "" }
+
+{
+  line = $0
+
+  if (fence != "") {
+    if (line ~ ("^[ \t]*" fence)) fence = ""
+    print line; prev_blank = 0; next
+  }
+  if (match(line, /^[ \t]*(```+|~~~+)/)) {
+    f = substr(line, RSTART, RLENGTH); sub(/^[ \t]*/, "", f)
+    fence = substr(f, 1, 3)
+    close_from(indent_of(line) + 1)
+    print line; prev_blank = 0; next
+  }
+
+  if (line ~ /^[ \t]*$/) { print line; prev_blank = 1; next }
+
+  k = indent_of(line)
+
+  if (match(line, /^[ \t]*[0-9]+[.)]([ \t]|$)/)) {
+    head = substr(line, 1, RLENGTH)
+    rest = substr(line, RLENGTH + 1)
+    match(head, /[0-9]+/)
+    lead = substr(head, 1, RSTART - 1)
+    num = substr(head, RSTART, RLENGTH)
+    tail = substr(head, RSTART + RLENGTH)
+    d = substr(tail, 1, 1)
+
+    close_from(k + 1)
+    if ((k in count) && delim[k] == d) count[k]++
+    else { count[k] = num + 0; delim[k] = d }
+
+    print lead count[k] tail rest
+    prev_blank = 0; next
+  }
+
+  if (line ~ /^[ \t]*[-+*]([ \t]|$)/) {
+    close_from(k)            # a bullet at this depth ends ordered lists here and deeper
+  } else if (prev_blank || line ~ /^[ \t]*#/) {
+    close_from(k)            # unindented text after a gap, or a heading, ends lists
+  }                          # otherwise: lazy continuation of the current item
+  print line
+  prev_blank = 0
+}

@@ -1,0 +1,373 @@
+#!/usr/bin/env -S deno run --quiet --allow-read --allow-net=127.0.0.1 --allow-env --allow-run
+// mdview <file.md> — render markdown in Chrome the way VS Code's preview does here:
+// built-in markdown-it setup (html, hljs fences, math) + bierner's github-styles,
+// checkbox, emoji, footnotes, yaml-preamble and mermaid extensions.
+// Live-reloads on save (scroll position kept); follows the macOS light/dark setting.
+//
+// One background server (127.0.0.1:$MDVIEW_PORT, default 7181) serves any file under $HOME
+// at its absolute path; it starts on first use and exits after 30 idle minutes.
+// CSS in ../share/mdview is vendored (MIT) from VS Code's markdown-language-features and
+// the bierner.markdown-preview-github-styles / bierner.markdown-checkbox extensions.
+// KaTeX fonts and mermaid load from jsDelivr, so math and diagrams need network.
+
+import { basename, dirname, extname, fromFileUrl, resolve } from "jsr:@std/path@1";
+// @ts-types="npm:@types/markdown-it@14"
+import type MarkdownItT from "npm:markdown-it@14";
+
+const PORT = Number(Deno.env.get("MDVIEW_PORT") ?? 7181);
+const ORIGIN = `http://127.0.0.1:${PORT}`;
+const PERMS = ["--quiet", "--allow-read", "--allow-net=127.0.0.1", "--allow-env", "--allow-run"];
+const IDLE_MS = 30 * 60_000;
+const MD_EXT = new Set([".md", ".markdown"]);
+const STYLES = [
+  "markdown.css",
+  "highlight.css",
+  "checkboxes.css",
+  "github-base.css",
+  "github-theme-base.css",
+  "github-light.css",
+  "github-dark.css",
+  "github-highlight.css",
+];
+
+// ---------- client ----------
+
+async function view(arg: string | undefined) {
+  if (!arg || arg === "-h" || arg === "--help") {
+    console.error("usage: mdview <file.md>");
+    Deno.exit(arg ? 0 : 2);
+  }
+  let path: string;
+  try {
+    path = Deno.realPathSync(resolve(arg));
+  } catch {
+    console.error(`mdview: no such file: ${arg}`);
+    Deno.exit(1);
+  }
+  await ensureServer();
+  const url = ORIGIN + path.split("/").map(encodeURIComponent).join("/");
+  if (!(await focusTab(url))) await run("open", ["-a", "Google Chrome", url]);
+}
+
+async function ping(): Promise<boolean> {
+  try {
+    const res = await fetch(`${ORIGIN}/__mdview/ping`);
+    return (await res.text()) === "mdview";
+  } catch {
+    return false;
+  }
+}
+
+async function ensureServer() {
+  if (await ping()) return;
+  new Deno.Command(Deno.execPath(), {
+    args: ["run", ...PERMS, fromFileUrl(import.meta.url), "--serve"],
+    stdin: "null",
+    stdout: "null",
+    stderr: "null",
+    detached: true,
+  }).spawn().unref();
+  // first start downloads the npm packages into Deno's cache
+  for (let i = 0; i < 600; i++) {
+    await new Promise((r) => setTimeout(r, 100));
+    if (await ping()) return;
+  }
+  console.error(`mdview: server did not start on port ${PORT}; run \`mdview --serve\` to see why`);
+  Deno.exit(1);
+}
+
+// Bring an already-open preview tab to the front instead of opening a duplicate.
+const FOCUS_SCRIPT = `on run argv
+  set u to item 1 of argv
+  if application "Google Chrome" is not running then return "missing"
+  tell application "Google Chrome"
+    repeat with w in windows
+      set i to 0
+      repeat with t in tabs of w
+        set i to i + 1
+        set tu to URL of t
+        if tu is u or tu starts with (u & "#") then
+          set active tab index of w to i
+          set index of w to 1
+          activate
+          return "ok"
+        end if
+      end repeat
+    end repeat
+  end tell
+  return "missing"
+end run`;
+
+async function focusTab(url: string): Promise<boolean> {
+  const out = await run("osascript", ["-e", FOCUS_SCRIPT, url]);
+  return out.trim() === "ok";
+}
+
+async function run(cmd: string, args: string[]): Promise<string> {
+  const { stdout } = await new Deno.Command(cmd, { args, stdout: "piped", stderr: "null" }).output();
+  return new TextDecoder().decode(stdout);
+}
+
+// ---------- server ----------
+
+async function serve() {
+  const { serveFile } = await import("jsr:@std/http@1/file-server");
+  const render = await createRenderer();
+  const home = Deno.realPathSync(Deno.env.get("HOME")!);
+  const assets = resolve(dirname(fromFileUrl(import.meta.url)), "../share/mdview");
+  const allowedHosts = new Set([`127.0.0.1:${PORT}`, `localhost:${PORT}`]);
+  let clients = 0;
+  let lastActive = Date.now();
+
+  setInterval(() => {
+    if (clients === 0 && Date.now() - lastActive > IDLE_MS) Deno.exit(0);
+  }, 60_000);
+
+  const renderPath = async (path: string) => render(await Deno.readTextFile(path), basename(path));
+
+  const resolvePath = (raw: string): string | null => {
+    try {
+      const path = Deno.realPathSync(raw);
+      return path === home || path.startsWith(home + "/") ? path : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const events = (path: string): Response => {
+    const enc = new TextEncoder();
+    let watcher: Deno.FsWatcher | undefined;
+    let debounce: number | undefined;
+    let keepalive: number | undefined;
+    const stop = () => {
+      watcher?.close();
+      clearTimeout(debounce);
+      clearInterval(keepalive);
+    };
+    const body = new ReadableStream<Uint8Array>({
+      start(ctrl) {
+        clients++;
+        const send = (chunk: string) => {
+          try {
+            ctrl.enqueue(enc.encode(chunk));
+          } catch {
+            stop();
+          }
+        };
+        keepalive = setInterval(() => send(": keepalive\n\n"), 30_000);
+        // watch the directory: editors that save via rename replace the file's inode
+        watcher = Deno.watchFs(dirname(path), { recursive: false });
+        (async () => {
+          for await (const ev of watcher!) {
+            if (!ev.paths.includes(path)) continue;
+            clearTimeout(debounce);
+            debounce = setTimeout(async () => {
+              try {
+                send(`data: ${JSON.stringify({ html: (await renderPath(path)).body })}\n\n`);
+              } catch {
+                // file mid-write or deleted; the next event re-renders
+              }
+            }, 50);
+          }
+        })().catch(stop);
+      },
+      cancel() {
+        stop();
+        clients--;
+        lastActive = Date.now();
+      },
+    });
+    return new Response(body, {
+      headers: { "content-type": "text/event-stream", "cache-control": "no-store" },
+    });
+  };
+
+  Deno.serve({ hostname: "127.0.0.1", port: PORT, onListen() {} }, async (req) => {
+    // reject DNS-rebinding requests: only our own origin may read files
+    if (!allowedHosts.has(req.headers.get("host") ?? "")) return new Response("forbidden", { status: 403 });
+    lastActive = Date.now();
+    const url = new URL(req.url);
+    const route = url.pathname;
+
+    if (route === "/__mdview/ping") return new Response("mdview");
+    if (route.startsWith("/__mdview/assets/")) {
+      const name = basename(route);
+      return STYLES.includes(name) ? serveFile(req, resolve(assets, name)) : new Response("not found", { status: 404 });
+    }
+    if (route === "/__mdview/events") {
+      const path = resolvePath(url.searchParams.get("path") ?? "");
+      return path ? events(path) : new Response("not found", { status: 404 });
+    }
+
+    const path = resolvePath(decodeURIComponent(route));
+    if (!path) return new Response("not found", { status: 404 });
+    if (!MD_EXT.has(extname(path).toLowerCase())) return serveFile(req, path);
+    try {
+      const { body, title } = await renderPath(path);
+      return new Response(page(body, title, path), {
+        headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" },
+      });
+    } catch (e) {
+      return new Response(`mdview: ${e instanceof Error ? e.message : e}`, { status: 500 });
+    }
+  });
+}
+
+async function createRenderer() {
+  const [{ default: MarkdownIt }, { full: emoji }, { default: footnote }, { default: taskLists }, { default: preamble }, katexMod, { default: hljs }] =
+    await Promise.all([
+      import("npm:markdown-it@14"),
+      import("npm:markdown-it-emoji@3"),
+      import("npm:markdown-it-footnote@4"),
+      import("npm:markdown-it-task-lists@2"),
+      import("npm:markdown-it-github-preamble@1"),
+      import("npm:@vscode/markdown-it-katex@1"),
+      import("npm:highlight.js@11"),
+    ]);
+  // CJS default export; its bundled markdown-it typings differ from @types/markdown-it
+  const katex = (katexMod.default?.default ?? katexMod.default) as unknown as Parameters<MarkdownItT["use"]>[0];
+
+  // VS Code's language aliases before asking highlight.js
+  const normalizeLang = (lang: string) => {
+    switch (lang.toLowerCase()) {
+      case "shell": return "sh";
+      case "py3": return "python";
+      case "tsx": case "typescriptreact": return "jsx";
+      case "json5": case "jsonc": return "json";
+      case "c#": case "csharp": return "cs";
+      default: return lang;
+    }
+  };
+
+  const md: MarkdownItT = new MarkdownIt({
+    html: true,
+    linkify: false,
+    breaks: false,
+    typographer: false,
+    highlight(code: string, rawLang: string) {
+      const lang = normalizeLang(rawLang);
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return `<div>${hljs.highlight(code, { language: lang, ignoreIllegals: true }).value}</div>`;
+        } catch { /* fall through */ }
+      }
+      return `<div>${md.utils.escapeHtml(code)}</div>`;
+    },
+  })
+    .use(katex, { globalGroup: true, enableBareBlocks: true, enableMathBlockInHtml: true, enableMathInlineInHtml: true, enableFencedBlocks: true })
+    .use(preamble, { className: "github-preamble" })
+    .use(taskLists, { enabled: false })
+    .use(emoji)
+    .use(footnote);
+
+  const fence = md.renderer.rules.fence!;
+  md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+    const token = tokens[idx];
+    if (token.info.trim().split(/\s+/)[0].toLowerCase() === "mermaid") {
+      return `<pre class="mermaid">${md.utils.escapeHtml(token.content)}</pre>\n`;
+    }
+    token.attrJoin("class", "hljs");
+    return fence(tokens, idx, options, env, self);
+  };
+
+  // heading ids with VS Code's GitHub-style slugifier, deduplicated with -1, -2, ...
+  md.core.ruler.push("heading_ids", (state) => {
+    const seen = new Map<string, number>();
+    state.tokens.forEach((token, i) => {
+      if (token.type !== "heading_open") return;
+      const text = (state.tokens[i + 1].children ?? [])
+        .filter((t) => t.type === "text" || t.type === "code_inline")
+        .map((t) => t.content)
+        .join("");
+      const base = slugify(text);
+      const n = seen.get(base) ?? 0;
+      seen.set(base, n + 1);
+      token.attrSet("id", n ? `${base}-${n}` : base);
+    });
+  });
+
+  return (src: string, fallbackTitle: string) => {
+    const env = {};
+    const tokens = md.parse(src, env);
+    const h1 = tokens.findIndex((t) => t.type === "heading_open" && t.tag === "h1");
+    const title = h1 >= 0 ? tokens[h1 + 1].content : fallbackTitle;
+    return { body: md.renderer.render(tokens, md.options, env), title };
+  };
+}
+
+function slugify(heading: string): string {
+  return heading
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[\]\[!/'"#$%&()*+,.:;<=>?@\\^{|}~`。，、；：？！…—·ˉ¨‘’“”々～‖∶＂＇｀｜〃〔〕〈〉《》「」『』．〖〗【】（）［］｛｝]/g, "")
+    .replace(/^-+/, "")
+    .replace(/-+$/, "");
+}
+
+function escapeHtml(s: string): string {
+  return s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
+}
+
+function page(body: string, title: string, path: string): string {
+  const links = STYLES.map((s) => `<link rel="stylesheet" href="/__mdview/assets/${s}">`).join("\n");
+  return `<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${escapeHtml(title)}</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css">
+${links}
+<style>
+  body { margin: 0; }
+  .github-markdown-body { min-height: 100vh; }
+  .katex-error { color: #f14c4c; }
+</style>
+</head>
+<body class="vscode-body">
+<div class="markdown-body" dir="auto">
+<div class="github-markdown-body" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
+<div class="github-markdown-content" id="mdview-content">${body}</div>
+</div>
+</div>
+<script type="module">
+const content = document.getElementById("mdview-content");
+const dark = matchMedia("(prefers-color-scheme: dark)");
+let mermaid;
+
+function applyTheme() {
+  document.body.classList.toggle("vscode-dark", dark.matches);
+  document.body.classList.toggle("vscode-light", !dark.matches);
+}
+
+async function renderMermaid() {
+  const nodes = [...content.querySelectorAll("pre.mermaid")];
+  if (!nodes.length) return;
+  for (const n of nodes) {
+    n.dataset.src ??= n.textContent;
+    n.textContent = n.dataset.src;
+    n.removeAttribute("data-processed");
+  }
+  mermaid ??= (await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs")).default;
+  mermaid.initialize({ startOnLoad: false, theme: dark.matches ? "dark" : "default" });
+  await mermaid.run({ nodes, suppressErrors: true });
+}
+
+applyTheme();
+renderMermaid();
+dark.addEventListener("change", () => { applyTheme(); renderMermaid(); });
+
+const events = new EventSource("/__mdview/events?path=" + encodeURIComponent(${JSON.stringify(path).replace(/</g, "\\u003c")}));
+events.onmessage = (e) => {
+  content.innerHTML = JSON.parse(e.data).html;
+  renderMermaid();
+};
+</script>
+</body>
+</html>
+`;
+}
+
+if (Deno.args[0] === "--serve") await serve();
+else await view(Deno.args[0]);

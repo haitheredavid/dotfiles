@@ -108,6 +108,123 @@
       "skillFolderHash": "68f8ca8735b0539b76227428d2ced75233b870e7",
       "installedAt": "2026-05-29T03:56:38.390Z",
       "updatedAt": "2026-05-29T03:56:38.390Z"
+    },
+    "cloud-run-basics": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/google/skills.git",
+      "skillPath": "skills/cloud/cloud-run-basics/SKILL.md",
+      "skillFolderHash": "03d252816fc8e4d2444d2574ad53f0522ab744b2",
+      "installedAt": "2026-11-07T23:29:30.278Z",
+      "updatedAt": "2026-11-07T23:29:30.278Z"
+    },
+    "cloud-sql-basics": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/google/skills.git",
+      "skillPath": "skills/cloud/cloud-sql-basics/SKILL.md",
+      "skillFolderHash": "3a8cefbb70599a75a720bc581fd3bcaf9f7bdbc4",
+      "installedAt": "2026-11-07T23:29:30.281Z",
+      "updatedAt": "2026-11-07T23:29:30.281Z"
+    },
+    "gcloud": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/google/skills.git",
+      "skillPath": "skills/cloud/gcloud/SKILL.md",
+      "skillFolderHash": "058b2f1a90d9fe6b62f35704879f61dbcb122479",
+      "installedAt": "2026-11-07T23:29:30.281Z",
+      "updatedAt": "2026-11-07T23:29:30.281Z"
+    },
+    "google-cloud-recipe-auth": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/google/skills.git",
+      "skillPath": "skills/cloud/google-cloud-recipe-auth/SKILL.md",
+      "skillFolderHash": "d4d99becf3987748ca6b8221a9e76c724f216b9f",
+      "installedAt": "2026-11-07T23:29:30.282Z",
+      "updatedAt": "2026-11-07T23:29:30.282Z"
+    },
+    "google-cloud-recipe-onboarding": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/google/skills.git",
+      "skillPath": "skills/cloud/google-cloud-recipe-onboarding/SKILL.md",
+      "skillFolderHash": "7734d0c82a97791a3e668dd1c6d33a929052e1cc",
+      "installedAt": "2026-11-07T23:29:30.282Z",
+      "updatedAt": "2026-11-07T23:29:30.282Z"
+    },
+    "google-cloud-storage-basics": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/google/skills.git",
+      "skillPath": "skills/cloud/google-cloud-storage-basics/SKILL.md",
+      "skillFolderHash": "9aae81a6bb00935882f74a871c1d9b59ea29fce7",
+      "installedAt": "2026-11-07T23:29:30.283Z",
+      "updatedAt": "2026-11-07T23:29:30.283Z"
+    },
+    "google-cloud-waf-cost-optimization": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/google/skills.git",
+      "skillPath": "skills/cloud/google-cloud-waf-cost-optimization/SKILL.md",
+      "skillFolderHash": "3b98e5ce36c983a75c29b5bfbd942c99b6a3c25f",
+      "installedAt": "2026-11-07T23:29:30.283Z",
+      "updatedAt": "2026-11-07T23:29:30.283Z"
+    },
+    "google-cloud-waf-operational-excellence": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/google/skills.git",
+      "skillPath": "skills/cloud/google-cloud-waf-operational-excellence/SKILL.md",
+      "skillFolderHash": "7fd3291dbb7e3eed1870def63c3dc6f8473b8565",
+      "installedAt": "2026-11-07T23:29:30.284Z",
+      "updatedAt": "2026-11-07T23:29:30.284Z"
+    },
+    "google-cloud-waf-performance-optimization": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/google/skills.git",
+      "skillPath": "skills/cloud/google-cloud-waf-performance-optimization/SKILL.md",
+      "skillFolderHash": "8e28e9805004f46f5b486126fa127f5d0f90764e",
+      "installedAt": "2026-11-07T23:29:30.284Z",
+      "updatedAt": "2026-11-07T23:29:30.284Z"
+    },
+    "google-cloud-waf-reliability": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/google/skills.git",
+      "skillPath": "skills/cloud/google-cloud-waf-reliability/SKILL.md",
+      "skillFolderHash": "20c153fc5e057546a85b5d0999b98f45325d3757",
+      "installedAt": "2026-11-07T23:29:30.285Z",
+      "updatedAt": "2026-11-07T23:29:30.285Z"
+    },
+    "google-cloud-waf-security": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/google/skills.git",
+      "skillPath": "skills/cloud/google-cloud-waf-security/SKILL.md",
+      "skillFolderHash": "e154a69c8ccd69564af1245d88bc77ac12311b22",
+      "installedAt": "2026-11-07T23:29:30.285Z",
+      "updatedAt": "2026-11-07T23:29:30.285Z"
+    },
+    "google-cloud-waf-sustainability": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/google/skills.git",
+      "skillPath": "skills/cloud/google-cloud-waf-sustainability/SKILL.md",
+      "skillFolderHash": "94571f44c2c3525d9b6e588bf3c9515546f22744",
+      "installedAt": "2026-11-07T23:29:30.286Z",
+      "updatedAt": "2026-11-07T23:29:30.286Z"
+    },
+    "finding-google-skills": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/google/skills.git",
+      "skillPath": "skills/developers/finding-google-skills/SKILL.md",
+      "skillFolderHash": "0431b326490629a972bd9a242dba5334e3be786f",
+      "installedAt": "2026-11-07T23:29:30.286Z",
+      "updatedAt": "2026-11-07T23:29:30.286Z"
     }
   },
   "dismissed": {

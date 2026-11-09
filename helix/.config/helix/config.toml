@@ -23,16 +23,16 @@ enable = true
 [editor.file-picker]
 hidden = false
 
+[editor.auto-save]
+focus-lost = true
+
+[editor.auto-save.after-delay]
+enable = true
+timeout = 3000
+
 [keys.normal.space]
-# Space+m: review current file in markless on helix's own terminal (q returns to helix)
-m = [
-  # :insert-output blocks helix while markless runs (:sh does not); all output goes to the tty so nothing is inserted.
-  # Real tty device, not /dev/tty: crossterm's macOS input reader can't poll the /dev/tty alias.
-  # Clear first (markless only paints non-blank cells), then restore what markless resets on exit:
-  # alternate screen, bracketed paste, mouse capture.
-  ':insert-output t=/dev/$(ps -o tty= -p $$ | tr -d " "); printf "\033[2J" > $t; markless "%{buffer_name}" < $t > $t 2>&1; printf "\033[?1049h\033[?2004h\033[?1000h\033[?1002h\033[?1003h\033[?1015h\033[?1006h" > $t',
-  ':redraw',
-]
+# Space+m: preview current file in Chrome, VS Code-style (mdview; live-reloads on save)
+m = ':sh mdview "%{buffer_name}"'
 
 [keys.normal]
 # Press Ctrl+y to open Yazi

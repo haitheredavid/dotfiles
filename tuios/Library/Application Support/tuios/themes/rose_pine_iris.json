@@ -1,0 +1,8 @@
+{
+  "id": "rose_pine_iris",
+  "display_name": "Rose Pine (iris accent)",
+  "base": "rose_pine",
+  "chrome": {
+    "accent": "purple"
+  }
+}

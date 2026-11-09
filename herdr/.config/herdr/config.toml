@@ -21,6 +21,109 @@ swap_pane_right = "prefix+ctrl+l"
 reload_config = "prefix+r"
 resize_mode = "prefix+shift+r"
 
+# tmux: , renames the window (pane here), . for the workspace, ' for the tab.
+rename_pane = "prefix+,"
+rename_workspace = "prefix+."
+rename_tab = "prefix+'"
+
+# Close tab on W; free because rename_workspace moved off its default prefix+shift+w.
+close_tab = "prefix+shift+w"
+
+# Workspaces (tmux sessions): direct ctrl+alt chords, no prefix. Ghostty leaves ctrl+alt free.
+# prefix+9/0 (tmux switch-client -p/-n) would collide with switch_tab's prefix+9.
+previous_workspace = "ctrl+alt+p"
+next_workspace = "ctrl+alt+n"
+switch_workspace = "ctrl+alt+1..9"
+
+# Workspace navigator (prefix+w): j/k walk workspaces instead of arrows; pane moves take shift+j/k.
+navigate_workspace_down = "j"
+navigate_workspace_up = "k"
+navigate_pane_down = "shift+j"
+navigate_pane_up = "shift+k"
+
+# Pane layouts via the ctx.herdr-flow plugin (~/projects/ctx-herdr). tmux uses prefix Tab/BTab
+# for next/previous-layout, but herdr's prefix+tab cycles panes, so layouts go on prefix+space.
+# Cycle: even-horizontal, even-vertical, main-horizontal, main-vertical, tiled.
+[[keys.command]]
+key = "prefix+space"
+type = "plugin_action"
+command = "ctx.herdr-flow.layout-next"
+description = "next pane layout"
+
+[[keys.command]]
+key = "prefix+alt+space"
+type = "plugin_action"
+command = "ctx.herdr-flow.layout-prev"
+description = "previous pane layout"
+
+# tmux rotate-window (prefix C-o): every pane moves one slot forward, shape kept.
+[[keys.command]]
+key = "prefix+ctrl+o"
+type = "plugin_action"
+command = "ctx.herdr-flow.layout-rotate"
+description = "rotate panes"
+
+# Popup scratchpads (ctx.herdr-flow, zmx-backed). ctrl+\ inside hides; prefix+t reopens.
+[[keys.command]]
+key = "prefix+t"
+type = "plugin_action"
+command = "ctx.herdr-flow.scratch"
+description = "scratchpads"
+
+# Jump to the parent of the focused worktree workspace (the repo's source checkout).
+# herdr has no pinning or parent-jump action; worktree list reports the group's source workspace.
+[[keys.command]]
+key = "prefix+u"
+type = "shell"
+command = '''id=$(/opt/homebrew/bin/herdr worktree list | grep -o '"source_workspace_id":"[^"]*"' | cut -d'"' -f4) && [ -n "$id" ] && /opt/homebrew/bin/herdr workspace focus "$id"'''
+description = "jump to worktree parent"
+
+# New tab running helix in the workspace's root directory (ctx.herdr-flow).
+[[keys.command]]
+key = "prefix+alt+h"
+type = "plugin_action"
+command = "ctx.herdr-flow.editor"
+description = "helix tab at workspace root"
+
+# Agent critters (ctx.herdr-flow): alt+a pins a narrow split, alt+shift+a pops it over the layout.
+[[keys.command]]
+key = "prefix+alt+a"
+type = "plugin_action"
+command = "ctx.herdr-flow.critters"
+description = "agent critters (split)"
+
+[[keys.command]]
+key = "prefix+alt+shift+a"
+type = "plugin_action"
+command = "ctx.herdr-flow.critters-popup"
+description = "agent critters (popup)"
+
+# Construction town (ctx.herdr-flow): alt+c opens the city as a split beside the focused pane, alt+shift+c as a popup.
+[[keys.command]]
+key = "prefix+alt+c"
+type = "plugin_action"
+command = "ctx.herdr-flow.town"
+description = "construction town (split)"
+
+[[keys.command]]
+key = "prefix+alt+shift+c"
+type = "plugin_action"
+command = "ctx.herdr-flow.town-popup"
+description = "construction town (popup)"
+
+# panoptes plugin (prefix+o is herdr's default open_notification_target).
+[[keys.command]]
+key = "prefix+alt+o"
+type = "plugin_action"
+command = "panoptes.open"
+description = "panoptes (overlay)"
+
+[[keys.command]]
+key = "prefix+alt+shift+o"
+type = "plugin_action"
+command = "panoptes.open-tab"
+description = "panoptes (new tab)"
+
 # dark-tundra, matching ~/.tmux.conf and omp. Palette:
 #   iceCave #11171C  glacierBlue #172028  permafrost #1E2A34  coldBorder #2A3A46
 #   iceWhite #E3E9F0  mutedIce #A3B0BF  dimIce #667381  auroraGreen #66D1A1 (accent)
@@ -63,3 +166,19 @@ tab_bar_right = [
   { type = "datetime", format = "%H:%M" },
 ]
 tab_bar_right_separator = " | "
+# Distinct glyphs per state (blocked/working/done/idle), so rows don't need state text.
+status_indicators = "symbols"
+
+# Agents list, one line each: state glyph + what it's doing (omp puts its session title in the
+# terminal title). Location is implicit: agent_panel_sort = "spaces" groups rows by workspace.
+[ui.sidebar.agents]
+rows = [["state_icon", { token = "terminal_title_stripped", fg = "#E3E9F0" }]]
+
+[ui.sound]
+enabled = false
+
+[ui.toast]
+delivery = "herdr"
+
+[ui.toast.herdr]
+position = "top-right"

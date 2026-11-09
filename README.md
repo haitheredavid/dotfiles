@@ -1,7 +1,7 @@
 # dotfiles
 
-macOS terminal + agent setup — zsh + oh-my-zsh + powerlevel10k, tmux, helix, ghostty, herdr, omp,
-Claude Code, shared agent skills — managed with [GNU Stow](https://www.gnu.org/software/stow/).
+macOS terminal + agent setup — zsh + oh-my-zsh + powerlevel10k, tmux, tuios, helix, ghostty, herdr,
+omp, Claude Code, shared agent skills — managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
 ## Layout
 
@@ -14,28 +14,31 @@ Each top-level directory is a stow package whose tree mirrors `$HOME`:
 | `helix` | `~/.config/helix/` |
 | `ghostty` | `~/.config/ghostty/`, `~/Library/Application Support/com.mitchellh.ghostty/config` |
 | `herdr` | `~/.config/herdr/config.toml` (sockets, logs, session state stay untracked). Claude hook from `herdr integration install claude` lives in `claude` (`hooks/herdr-agent-state.sh` + `settings.json` entry); rerun it after upgrading herdr |
+| `tuios` | `~/Library/Application Support/tuios/{config.toml,themes/}`, `~/.local/bin/tuios-notes`; dock cells reuse `~/.tmux/{load,git-branch}.sh` |
 | `omp` | `~/.omp/agent/config.yml`, `~/.omp/agent/extensions/` |
 | `claude` | `~/.claude/{CLAUDE.md,settings.json,statusline-command.sh,hooks/}`, personal skills, links into `agents` skills |
 | `agents` | `~/.agents/skills/` + `.skill-lock.json` (third-party skills from the `skills` CLI) |
-| `launchagents/` (not a package) | `~/Library/LaunchAgents/` (rendered with real `$HOME`) |
+| `markdown` | `~/.local/bin/mdview` + `~/.local/share/mdview/` (Chrome preview), `~/Library/Application Support/marksman/config.toml` |
 
-Not tracked: app state/history/caches, Claude plugins (reinstalled from `enabledPlugins` in
+Not tracked: app state/history/caches (incl. tuios `sessions/`, `sidebar.json`, `tape-trust.toml`), Claude plugins (reinstalled from `enabledPlugins` in
 `settings.json`), databricks/mlflow skills (installed by their own tooling), tmux plugin checkouts
 (the `@plugin` list lives in `tmux/.tmux.conf`; `install.sh` installs them via tpm).
 
 ## Install
 
 ```sh
-brew install stow
 git clone git@github.com:haitheredavid/dotfiles.git ~/projects/dotfiles
+brew bundle --file ~/projects/dotfiles/Brewfile   # or DEPENDENCIES.md without Homebrew
 ~/projects/dotfiles/install.sh
 ```
 
 `install.sh` moves anything already at a package path to `~/.dotfiles-backup/<ts>/`, then runs
 `stow --no-folding --restow`, so every file is its own symlink and real directories like
-`~/.claude` stay real. It also renders the LaunchAgent, links ctx-scaffold presets from
-`~/suffolk/ctx` when present, and clones oh-my-zsh and tpm if missing. Idempotent; re-run after
-adding a file to a package.
+`~/.claude` stay real. It also links ctx-scaffold presets from `~/suffolk/ctx` when present, and
+clones oh-my-zsh and tpm if missing. Idempotent; re-run after adding a file to a package.
+
+To have a coding agent do the whole setup (deps, clone, install, verification), paste
+[AGENT_INSTALL.md](AGENT_INSTALL.md) into it.
 
 Apps that save settings by replacing the file (Claude Code / omp settings UIs, herdr's settings
 screen and onboarding, herdr integration installs) can swap a symlink for a plain file. Detect, then
@@ -46,16 +49,21 @@ stow -n -d ~/projects/dotfiles -t ~ --no-folding -v claude omp herdr   # lists r
 stow    -d ~/projects/dotfiles -t ~ --no-folding --adopt claude omp herdr && git -C ~/projects/dotfiles diff
 ```
 
-### Dependencies (Homebrew)
+### Dependencies
+
+With Homebrew, uncomment the optional entries you want in [Brewfile](Brewfile), then:
 
 ```sh
-brew install stow tmux helix zoxide fzf uv herdr powerlevel10k zsh-autosuggestions zsh-syntax-highlighting
-brew install --cask ghostty font-meslo-lg-nerd-font
+brew bundle --file ~/projects/dotfiles/Brewfile
 ```
 
+Without Homebrew, follow [DEPENDENCIES.md](DEPENDENCIES.md) (macOS arm64; installs into
+`~/.local/bin` and each tool's standard home).
+
 oh-my-zsh is a stock clone at `~/.oh-my-zsh` (cloned by `install.sh`; the official installer would
-overwrite `.zshrc`); nothing under `custom/` is used. Plugins are declared in `.zshrc`.
-powerlevel10k, autosuggestions and syntax-highlighting are sourced from Homebrew.
+overwrite `.zshrc`). Plugins are declared in `.zshrc`. powerlevel10k, autosuggestions and
+syntax-highlighting are sourced from Homebrew if present, else from
+`~/.oh-my-zsh/custom/{themes,plugins}/`.
 
 Regenerate completions after upgrading the tools:
 
@@ -80,7 +88,8 @@ ghostty and helix use **Frantic Contrast**, ported from the `daylerees.rainglow`
 
 - **ghostty**: `themes/frantic-contrast` — ANSI 16 widened from the theme's duotone so git/ls stay readable. `background-opacity 0.82`; `cmd+shift+b` toggles opaque.
 - **tmux**: dark-tundra, matching omp's `theme.dark`; no theme plugin, all styles explicit in `.tmux.conf`. `bg=default` everywhere so ghostty transparency shows through; `prefix+B` flips to opaque dimming. Status bar on top.
-- **helix**: `frantic_contrast` (opaque, bg matches ghostty opaque mode) and `frantic_contrast_transparent` (default). `sync-theme.sh` + LaunchAgent rewrite `config.toml` on macOS appearance change — both light/dark currently point at the transparent variant.
+- **helix**: `dark_tundra_transparent` (default) and `dark_tundra`, plus `frantic_contrast(_transparent)`. `tuios_terminal` uses only the 16 ANSI slots and the default background, so it follows whatever theme tuios/ghostty paints; switch to it when trying other tuios themes.
+- **tuios**: `dark_tundra` (`themes/dark_tundra.json`: `frantic_contrast` palette with dark-tundra chrome — green accent, slate unfocused border), `background = "off"` so ghostty's opacity shows through, thin `normal` borders. Every dock, tab and selection colour is a theme role/ink (`accent`, `text`, `dim`, `muted`, `success`, `warning`, `surface`), so switching theme recolours the whole chrome. `rose_pine_iris` (Rose Pine with an iris accent) is kept as an alternative. Two rails: right `sessions:30,terminals,spacer`, left `agents,files:35`. `set-config` and the settings page edit the linked file in place, so changes land in the repo.
 
 ## Keybinds worth remembering
 
@@ -88,4 +97,5 @@ ghostty and helix use **Frantic Contrast**, ported from the `daylerees.rainglow`
 - tmux floating panels, no prefix: `C-8` new de-vault scratch note in helix (`people/david-morgan/scratch/`), `C-9` omp, `C-0` shell. The same key hides the panel (it keeps running) and brings it back; another panel key switches to that panel. They live on a separate `float` tmux server (`tmux -L float ls`)
 - herdr prefix `C-s` (default `C-b`); `v` / `-` split; `c` new tab; `n` / `p` next/prev tab; `w` workspaces; `q` detach; `s` settings; `?` all bindings
 - ghostty `cmd+shift+o` float on top, `cmd+shift+b` opacity, global `cmd+\`` quick terminal
-- helix `space+m` markless preview of the current file, `C-y` yazi
+- tuios prefix `C-a` (tmux preset, same splits/focus keys as tmux); `prefix+alt+o` omp scratch, `prefix+alt+n` notes picker, `prefix+alt+t` blank scratch terminal
+- helix `space+m` previews the current file in Chrome (`mdview`, VS Code-style, live reload on save), `C-y` yazi

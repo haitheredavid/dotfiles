@@ -1,0 +1,33 @@
+## MOVE
+  h j k l      left / down / up / right
+  w b e        next word / prev word / word end
+  W B E        same, whitespace-delimited WORDs
+  0 ^ $        line start / first non-blank / line end
+  H M L        screen top / middle / bottom
+  g G          oldest history line / newest line
+  :            go to line number
+
+## SCROLL
+  C-u C-d      half page up / down
+  C-b C-f      full page up / down
+  C-y C-e      one line up / down (cursor stays)
+
+## SEARCH / JUMP
+  / ?          search down / up
+  n N          next / previous match
+  f F t T x    jump to / before char x on line
+  ; ,          repeat jump / reverse
+  %            matching bracket
+  { }          previous / next paragraph
+
+## SELECT / COPY
+  v  Space     begin selection
+  V            select line
+  C-v          toggle rectangle selection
+  y  Enter     copy and exit
+  Escape       clear selection
+  C-a ]        paste (normal mode)
+
+## EXIT
+  q            leave copy mode
+  i            this help (q to close)
