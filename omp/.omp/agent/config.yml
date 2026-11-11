@@ -15,7 +15,7 @@ setupVersion: 3
 display:
   showTokenUsage: true
   showTurnTime: true
-  cacheMissMarker: true
+  cacheMissMarker: false
   subagentLivePreview: false
   hideToolActivity: true
 extensionRenderers:
@@ -51,7 +51,7 @@ vault:
   enabled: true
 dev:
   autoqaConsent: granted
-hideThinkingBlock: true
+hideThinkingBlock: false
 recap:
   enabled: false
 personality: pragmatic
