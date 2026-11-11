@@ -15,6 +15,9 @@ RUN apt-get update \
     && useradd -m -u 1000 -s /bin/bash "$USER" \
     && echo "$USER ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/dotfiles \
     && chmod 440 /etc/sudoers.d/dotfiles
+# Also at /opt/dotfiles (root-owned, world-readable): images built on this one seed
+# homes that predate it from there, whatever has been pushed.
+COPY . /opt/dotfiles
 COPY --chown=1000:1000 . /home/$USER/projects/dotfiles
 USER $USER
 WORKDIR /home/$USER

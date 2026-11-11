@@ -50,10 +50,14 @@ if command -v omp >/dev/null; then
     grep -qF " $spec (" <<<"$OMP_PLUGINS" || omp plugin install "$spec"
   done
   # npm/git plugins: "<package name>=<install source>" (source defaults to the name)
-  for spec in cc-safety-net omp-enforce-uv omp-headroom @kryoz/caveman-plugin @estebanforge/pi-ask-codex \
+  for spec in cc-safety-net omp-enforce-uv @kryoz/caveman-plugin @estebanforge/pi-ask-codex \
     omp-agent-sdk-bridge=git:github.com/poog26/omp-agent-sdk-bridge; do
     grep -qF " ${spec%%=*}@" <<<"$OMP_PLUGINS" || omp plugin install "${spec#*=}"
   done
+  # headroom: own fork, linked so edits in ~/projects/omp-headroom go live
+  HEADROOM_DIR="$HOME/projects/omp-headroom"
+  [[ -d "$HEADROOM_DIR" ]] || git clone git@github.com:haitheredavid/omp-headroom.git "$HEADROOM_DIR"
+  grep -qF " omp-headroom@" <<<"$OMP_PLUGINS" || { (cd "$HEADROOM_DIR" && bun install && omp plugin link .); }
   for off in @kryoz/caveman-plugin omp-headroom; do
     grep -qF " $off@" <<<"$OMP_PLUGINS" || omp plugin disable "$off"
   done

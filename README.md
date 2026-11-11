@@ -20,7 +20,7 @@ stow -d ~/projects/dotfiles -t ~ --no-folding --adopt claude omp herdr && git -C
 
 `linux/setup.sh` is the Linux counterpart of the Brewfile + `install.sh`, for Ubuntu 24.04. It installs apt packages, plus helix, fzf, gh and bun through mise, then runs `install.sh` and clones the oh-my-zsh prompt and line-editing addons. Run it as your user (it uses sudo for apt); it's idempotent.
 
-`linux/Dockerfile` builds an image with all of it (copies this checkout, uncommitted changes included). herdr-box builds on it.
+`linux/Dockerfile` builds an image with all of it (copies this checkout, uncommitted changes included, to `~/projects/dotfiles` and, readable by everyone, to `/opt/dotfiles`). herdr-box builds on it and seeds homes that predate the image from `/opt/dotfiles`.
 
 ```sh
 docker build -f linux/Dockerfile -t dotfiles . && docker run --rm -it dotfiles
