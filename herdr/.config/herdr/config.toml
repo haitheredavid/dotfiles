@@ -180,8 +180,10 @@ overlay0 = "#667381"
 overlay1 = "#A3B0BF"
 text = "#E3E9F0"
 subtext0 = "#A3B0BF"
-green = "#5FB487"
-teal = "#66D1A1"
+# green = idle agent/space circles (○), plus git ↑ahead and online/installed marks.
+# teal = agent "done"/unseen markers (✓) in the sidebar. Both follow the ember accent.
+green = "#D9773A"
+teal = "#D9773A"
 yellow = "#D0B04D"
 peach = "#E4CB75"
 red = "#D26B6B"
@@ -189,10 +191,14 @@ blue = "#6C9FD6"
 mauve = "#B08FD2"
 
 [ui]
-# tmux-style internal splitters, pane labels on borders.
-pane_outer_borders = false
+# Every pane, even a lone one, gets a frame: ember (accent) when focused, dimIce otherwise.
+# Dividers stay shared (no gaps) like tmux; agent labels sit on the borders.
+pane_borders = "always"
+pane_outer_borders = true
 pane_gaps = false
 show_agent_labels_on_pane_borders = true
+# No scrollbar column beside panes (omp and friends keep the full width).
+pane_scrollbars = false
 # tmux status-right: load | git branch | clock.
 tab_bar_right = [
   { type = "zoom" },
