@@ -1,0 +1,15 @@
+# herdr sessionizer (prefix+f project, prefix+shift+f worktree, prefix+alt+f close).
+# No [layout]/[tabs]: new workspaces open a plain shell. Per-repo layouts: <repo>/.sessionizer/config.toml.
+[projects]
+roots = ["~/projects", "~/suffolk"]
+git_only = true
+depth = 1
+
+[ui]
+placement = "popup"
+width = "100%"
+height = "100%"
+preview_window = "right:50%"
+
+[worktree]
+github_prs = false

@@ -1,7 +1,11 @@
 # Frantic Contrast (rainglow), dark only. Theme file: ~/.config/ghostty/themes/frantic-contrast
-# bg #0e1114 == helix frantic_contrast ui.background == tmux prefix+B opaque bg.
-# Same ANSI slots as tuios `dark_tundra`; alternative: theme = rose-pine-iris (tuios `rose_pine_iris`).
+# bg #0e1114 == tmux prefix+B opaque bg.
 theme = frantic-contrast
+# Accent: burnt orange (emberOrange, same as tmux/helix/omp). ANSI green (palette 2/10) stays
+# green for git/diff readability. These override the theme file's cursor colours.
+cursor-color = #D9773A
+cursor-text = #0e1114
+split-divider-color = #D9773A
 # Window chrome follows terminal colors (no longer switching with macOS appearance).
 window-theme = ghostty
 # Matches VS Code terminal font; Nerd Font glyphs used by tmux status bar.
@@ -23,6 +27,8 @@ keybind = super+shift+b=toggle_background_opacity
 keybind = ctrl+8=csi:56;5u
 keybind = ctrl+9=csi:57;5u
 keybind = ctrl+0=csi:48;5u
+# cmd+k  herdr-bar fuzzy jump: send ctrl+alt+k (CSI u), which herdr binds to herdr-bar.open.
+keybind = super+k=csi:107;7u
 
 # ---------- splits (opt-based; ghostty eats these before tmux sees them) ----------
 # opt+up/down  focus split above/below (opt+left/right left alone: shell word-jump)

@@ -6,10 +6,10 @@ inherits = "dark_tundra"
 
 "ui.statusline" = { fg = "mutedIce" }
 "ui.statusline.inactive" = { fg = "dimIce" }
-"ui.statusline.normal" = { fg = "auroraGreen", modifiers = ["bold"] }
+"ui.statusline.normal" = { fg = "emberOrange", modifiers = ["bold"] }
 "ui.statusline.insert" = { fg = "warningGold", modifiers = ["bold"] }
 "ui.statusline.select" = { fg = "magenta", modifiers = ["bold"] }
 
 "ui.bufferline" = { fg = "dimIce" }
-"ui.bufferline.active" = { fg = "auroraGreen", modifiers = ["bold"] }
+"ui.bufferline.active" = { fg = "emberOrange", modifiers = ["bold"] }
 "ui.bufferline.background" = {}

@@ -47,8 +47,8 @@ jq comes first because `rel` needs it.
 | stow | `install.sh` | `d=$(mktemp -d) && curl -fsSL https://ftp.gnu.org/gnu/stow/stow-latest.tar.gz \| tar -xz -C "$d" && (cd "$d"/stow-* && ./configure -q --prefix="$HOME/.local" && make install)` (uses system perl) |
 | tmux | terminal multiplexer | build from source, block below ([tmux wiki](https://github.com/tmux/tmux/wiki/Installing)); or `sudo port install tmux` if MacPorts is present |
 | helix | editor (`hx`) | `d=$(mktemp -d) && curl -fsSL "$(rel helix-editor/helix 'aarch64-macos\.tar\.xz$')" \| tar -xJ -C "$d" && cp "$d"/helix-*/hx ~/.local/bin/ && mkdir -p ~/.config/helix/runtime && cp -R "$d"/helix-*/runtime/. ~/.config/helix/runtime/` |
-| tuios | terminal multiplexer / window manager | `curl -fsSL "$(rel Gaurav-Gosain/tuios '^tuios_[0-9.]+_Darwin_arm64\.tar\.gz$')" \| tar -xz -C ~/.local/bin tuios` |
 | herdr | terminal multiplexer for agents | `curl -fsSLo ~/.local/bin/herdr "$(rel herdrdev/herdr '^herdr-macos-aarch64$')" && chmod +x ~/.local/bin/herdr` |
+| bun | builds herdr sessionizer plugin (`install.sh` installs herdr plugins) | `curl -fsSL https://bun.sh/install \| bash` |
 | neovim | `$EDITOR` | `curl -fsSL "$(rel neovim/neovim '^nvim-macos-arm64\.tar\.gz$')" \| tar -xz -C ~/.local && ln -sf ~/.local/nvim-macos-arm64/bin/nvim ~/.local/bin/nvim` |
 | zoxide | omz zoxide plugin (`z`, `zi`) | `curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh \| sh` |
 | fzf | omz fzf plugin, tmux-fzf | `git clone --depth 1 https://github.com/junegunn/fzf ~/.fzf && ~/.fzf/install --bin && ln -sf ~/.fzf/bin/fzf ~/.local/bin/fzf` |

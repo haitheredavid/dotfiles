@@ -7,7 +7,7 @@ terminal on the target Mac. The agent needs shell access; nothing else is assume
 
 You are setting up my macOS terminal + agent environment from my dotfiles repo
 `https://github.com/haitheredavid/dotfiles` (GNU Stow packages: zsh + oh-my-zsh + powerlevel10k,
-tmux, tuios, helix, ghostty, omp, Claude Code, shared agent skills). Work through the phases in order.
+tmux, helix, ghostty, omp, Claude Code, shared agent skills). Work through the phases in order.
 Run commands yourself; only stop to ask me where this prompt says **ASK**.
 
 ## Ground rules
@@ -38,7 +38,7 @@ Run commands yourself; only stop to ask me where this prompt says **ASK**.
      (`git@github.com:haitheredavid/dotfiles.git`, needs a GitHub SSH key) or HTTPS
      (`https://github.com/haitheredavid/dotfiles.git`, read-only). If I'm using my own fork, use
      that URL.
-   - Which packages to install (default all): `zsh tmux helix ghostty tuios omp claude agents markdown`.
+   - Which packages to install (default all): `zsh tmux helix ghostty omp claude agents markdown`.
 
 ## Phase 2 — Clone
 

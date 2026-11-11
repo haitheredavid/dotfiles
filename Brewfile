@@ -3,8 +3,9 @@ brew "stow"
 brew "git"
 brew "tmux"
 brew "helix"
-brew "tuios"
 brew "herdr"
+tap "oven-sh/bun"
+brew "oven-sh/bun/bun" # herdr sessionizer build; trust first: `brew trust --formula oven-sh/bun/bun`
 brew "neovim"        # $EDITOR
 brew "zoxide"
 brew "fzf"

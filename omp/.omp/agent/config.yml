@@ -4,8 +4,8 @@ symbolPreset: ascii
 composer:
   shape: box
 theme:
-  light: dark-tundra
-  dark: dark-tundra-contrast
+  light: dark-tundra-ember
+  dark: dark-tundra-ember-contrast
 setupVersion: 3
 display:
   showTokenUsage: true

@@ -32,6 +32,7 @@ plugins=(
   sudo            # esc esc -> prepend sudo
   copypath        # copy cwd to clipboard
   extract         # x <archive>
+  herdr           # herdr-ohmyzsh: hsplit htab hagent hworktree hreload, slow-command toasts
   alias-finder    # on-demand only: `alias-finder <cmd>` (autoload off, no nag)
 )
 source "$ZSH/oh-my-zsh.sh"          # runs compinit once; do not call it again below
@@ -69,7 +70,6 @@ alias love='/Applications/love.app/Contents/MacOS/love'
 alias cm='csl multi && claude'
 alias cs='csl single && claude'
 alias pano='panoptes'
-alias tui='tuios'
 
 # ---------- functions ----------
 # svg [-c] [files...]: Quick Look (or Chrome with -c); no files → fzf pick under cwd
@@ -193,32 +193,6 @@ notes() {
   rm -f -- "$tmp"
 }
 compdef '_arguments "(-l --location)"{-l,--location}"[notes location]:location:(sfk hai cwd)" "1:path:_files -/"' notes
-
-# ---------- tuios: name each workspace after the project its focused pane is in ----------
-# The dock shows "3 dotfiles" instead of "3 3". Runs after every prompt, in the background.
-# Only the pane that has focus in its workspace renames it, and a name you set by hand
-# (prefix ,) stays: the hook replaces only a name it wrote. Clear yours to hand it back.
-if [[ -n $TUIOS_WINDOW_ID ]] && (( $+commands[tuios] && $+commands[jq] )); then
-  _tuios_ws_autoname() {
-    local root label ws cur state
-    root=$(git rev-parse --show-toplevel 2>/dev/null) || root=$PWD
-    case $root in
-      $HOME) label='~' ;;
-      /)     label='/' ;;
-      *)     label=${root:t} ;;
-    esac
-    IFS=$'\t' read -r ws cur < <(tuios list-workspaces --json -s "$TUIOS_SESSION" |
-      jq -r --arg w "$TUIOS_WINDOW_ID" '.workspaces[] | select(.focused_window_id == $w) | "\(.workspace)\t\(.name)"')
-    [[ -n $ws && $cur != "$label" ]] || return
-    state="${XDG_STATE_HOME:-$HOME/.local/state}/tuios-wsname/$TUIOS_SESSION-$ws"
-    [[ -z $cur || $cur == "$(<$state)" ]] || return
-    tuios set-workspace-name -s "$TUIOS_SESSION" "$ws" "$label" &&
-      mkdir -p "${state:h}" && print -r -- "$label" > "$state"
-  }
-  _tuios_ws_autoname_bg() { _tuios_ws_autoname >/dev/null 2>&1 &! }
-  autoload -Uz add-zsh-hook
-  add-zsh-hook precmd _tuios_ws_autoname_bg
-fi
 
 # ---------- history (overrides oh-my-zsh lib/history.zsh, which must run first) ----------
 HISTSIZE=50000
