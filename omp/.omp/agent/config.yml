@@ -13,6 +13,8 @@ display:
   cacheMissMarker: true
   subagentLivePreview: false
   hideToolActivity: true
+extensionRenderers:
+  assistantText: true
 statusLine:
   preset: custom
   leftSegments:
@@ -44,7 +46,7 @@ vault:
   enabled: true
 dev:
   autoqaConsent: granted
-hideThinkingBlock: false
+hideThinkingBlock: true
 recap:
   enabled: false
 personality: pragmatic
