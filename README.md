@@ -16,6 +16,17 @@ App replaced symlink with plain file → adopt back:
 stow -d ~/projects/dotfiles -t ~ --no-folding --adopt claude omp herdr && git -C ~/projects/dotfiles diff
 ```
 
+## Linux
+
+`linux/setup.sh` is the Linux counterpart of the Brewfile + `install.sh`, for Ubuntu 24.04. It installs apt packages, plus helix, fzf, gh and bun through mise, then runs `install.sh` and clones the oh-my-zsh prompt and line-editing addons. Run it as your user (it uses sudo for apt); it's idempotent.
+
+`linux/Dockerfile` builds an image with all of it (copies this checkout, uncommitted changes included). herdr-box builds on it.
+
+```sh
+docker build -f linux/Dockerfile -t dotfiles . && docker run --rm -it dotfiles
+linux/check.sh   # build + check a login zsh loads cleanly and finds its tools
+```
+
 ## Theme
 
 dark-tundra everywhere, accent soft burnt orange `#B87048` (brighter `#D4915E` for cursor, active labels, git status). Transparent backgrounds over ghostty `background-opacity 0.82`.
