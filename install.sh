@@ -37,6 +37,28 @@ if command -v herdr >/dev/null; then
   done
 fi
 
+# omp plugins (state lives in ~/.omp/plugins, not stowed). Skips what is already installed.
+# caveman and headroom stay disabled: caveman forces full caveman on every new session; `omp plugin enable` to opt in.
+if command -v omp >/dev/null; then
+  OMP_PLUGINS="$(omp plugin list 2>/dev/null || true)"
+  OMP_MARKETS="$(omp plugin marketplace list 2>/dev/null || true)"
+  for market in erikh3/omp-marketplace pedropb/pi-extensions; do
+    grep -q "$market" <<<"$OMP_MARKETS" || omp plugin marketplace add "$market"
+  done
+  for spec in herdr-session-agent-name-sync@erikh3-omp-marketplace \
+    herdr-interactive-tool-block@erikh3-omp-marketplace redmine@pedropb-pi-extensions; do
+    grep -qF " $spec (" <<<"$OMP_PLUGINS" || omp plugin install "$spec"
+  done
+  # npm/git plugins: "<package name>=<install source>" (source defaults to the name)
+  for spec in cc-safety-net omp-enforce-uv omp-headroom @kryoz/caveman-plugin @estebanforge/pi-ask-codex \
+    omp-agent-sdk-bridge=git:github.com/poog26/omp-agent-sdk-bridge; do
+    grep -qF " ${spec%%=*}@" <<<"$OMP_PLUGINS" || omp plugin install "${spec#*=}"
+  done
+  for off in @kryoz/caveman-plugin omp-headroom; do
+    grep -qF " $off@" <<<"$OMP_PLUGINS" || omp plugin disable "$off"
+  done
+fi
+
 # tmux plugin manager + the @plugin list in tmux/.tmux.conf (no running server needed)
 [[ -d "$HOME/.tmux/plugins/tpm" ]] || git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 "$HOME/.tmux/plugins/tpm/bin/install_plugins"

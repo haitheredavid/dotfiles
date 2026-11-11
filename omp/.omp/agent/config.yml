@@ -1,5 +1,10 @@
 modelRoles:
   default: anthropic/claude-opus-5-5
+  plan: anthropic/claude-opus-5-5:high
+  review: anthropic/claude-opus-5-5:high
+task:
+  agentModelOverrides:
+    reviewer: "@review"
 symbolPreset: ascii
 composer:
   shape: box
@@ -61,7 +66,8 @@ collab:
   displayName: dmo
 defaultThinkingLevel: medium
 claudeResets:
-  autoRedeem: "yes"
+  autoRedeem5h: "yes"
+  autoRedeemWeekly: "yes"
 startup:
   quiet: true
 update:
