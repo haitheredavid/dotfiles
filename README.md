@@ -31,6 +31,12 @@ linux/check.sh   # build + check a login zsh loads cleanly and finds its tools
 
 dark-tundra everywhere, accent soft burnt orange `#B87048` (brighter `#D4915E` for cursor, active labels, git status). Transparent backgrounds over ghostty `background-opacity 0.82`.
 
+## Claude subscription
+
+Default, planning, and review roles use `claude-bridge/claude-opus-5-5` through the installed `omp-agent-sdk-bridge` plugin. Planning and review retain high thinking effort. Log in through Claude Code (`claude`, then `/login`), not OMP's native Anthropic provider.
+
+`omp/.omp/agent/claude-bridge.json` enforces subscription-only billing and disables Extra Usage. Credentials stay in Claude Code, outside dotfiles. Restart OMP after changing model roles; the native `anthropic/…` provider is separate and is not selected by these roles.
+
 ## Headroom UI
 
 `omp/.omp/agent/extensions/headroom-ui.ts` adapts the linked Headroom plugin's widget into one full-width, title-free line of metrics, using the editor's theme symbols and aligned corners (`+` with the ASCII preset). Narrow terminals truncate rather than wrap. Headroom still owns all counters and refreshes; the adapter only replaces its framed string widget, leaving other widgets untouched. Enable the plugin with `omp plugin enable omp-headroom`, then restart OMP to load the extension.

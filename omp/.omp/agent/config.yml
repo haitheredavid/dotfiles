@@ -1,7 +1,7 @@
 modelRoles:
-  default: anthropic/claude-opus-5-5
-  plan: anthropic/claude-opus-5-5:high
-  review: anthropic/claude-opus-5-5:high
+  default: claude-bridge/claude-opus-5-5
+  plan: claude-bridge/claude-opus-5-5:high
+  review: claude-bridge/claude-opus-5-5:high
 task:
   agentModelOverrides:
     reviewer: "@review"
@@ -51,7 +51,7 @@ vault:
   enabled: true
 dev:
   autoqaConsent: granted
-hideThinkingBlock: false
+hideThinkingBlock: true
 recap:
   enabled: false
 personality: pragmatic

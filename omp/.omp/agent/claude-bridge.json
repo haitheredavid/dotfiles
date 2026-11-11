@@ -1,0 +1,6 @@
+{
+  "provider": {
+    "billing": "subscription",
+    "allowExtraUsage": false
+  }
+}
