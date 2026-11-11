@@ -56,7 +56,8 @@ if command -v omp >/dev/null; then
   done
   # headroom: own fork, linked so edits in ~/projects/omp-headroom go live
   HEADROOM_DIR="$HOME/projects/omp-headroom"
-  [[ -d "$HEADROOM_DIR" ]] || git clone git@github.com:haitheredavid/omp-headroom.git "$HEADROOM_DIR"
+  [[ -d "$HEADROOM_DIR" ]] || { git clone https://github.com/haitheredavid/omp-headroom.git "$HEADROOM_DIR" &&
+    git -C "$HEADROOM_DIR" remote set-url --push origin git@github.com:haitheredavid/omp-headroom.git; }
   grep -qF " omp-headroom@" <<<"$OMP_PLUGINS" || { (cd "$HEADROOM_DIR" && bun install && omp plugin link .); }
   for off in @kryoz/caveman-plugin omp-headroom; do
     grep -qF " $off@" <<<"$OMP_PLUGINS" || omp plugin disable "$off"
