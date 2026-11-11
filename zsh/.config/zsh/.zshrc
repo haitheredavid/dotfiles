@@ -35,6 +35,11 @@ plugins=(
   herdr           # herdr-ohmyzsh: hsplit htab hagent hworktree hreload, slow-command toasts
   alias-finder    # on-demand only: `alias-finder <cmd>` (autoload off, no nag)
 )
+# A command (or app path) that runs here. mise-managed tools count via their shims, which
+# work before `mise activate` below. Plugins/aliases for tools a machine lacks (the Linux
+# box has no tmuxinator or Mac apps) would only point at nothing, so they're skipped.
+_has() { (( $+commands[$1] )) || [[ -x $1 || -x $HOME/.local/share/mise/shims/$1 ]]; }
+for _p in terraform tmuxinator; do _has $_p || plugins=(${plugins:#$_p}); done; unset _p
 source "$ZSH/oh-my-zsh.sh"          # runs compinit once; do not call it again below
 # brew install puts zsh addons under /opt/homebrew/share; the no-brew install clones them into $ZSH/custom
 _src_addon() { local f; for f in "$@"; do [[ -r "$f" ]] && { source "$f"; return; }; done; }
@@ -60,16 +65,16 @@ export PATH="$VOLTA_HOME/bin:$PATH"          # re-prepend so volta shims beat pn
 export OPENCODE_EXPERIMENTAL_WORKSPACES=true   # opencode git-worktree workspaces
 
 #  ---------- aliases ----------
-alias mux='tmuxinator'
-alias oc='opencode'
-alias dbx='databricks'
-alias tf='terraform'
-alias claudia='claude -p'
-alias blender='/Applications/Blender.app/Contents/MacOS/Blender'
-alias love='/Applications/love.app/Contents/MacOS/love'
-alias cm='csl multi && claude'
-alias cs='csl single && claude'
-alias pano='panoptes'
+_has tmuxinator && alias mux='tmuxinator'
+_has opencode && alias oc='opencode'
+_has databricks && alias dbx='databricks'
+_has terraform && alias tf='terraform'
+_has claude && alias claudia='claude -p'
+_has /Applications/Blender.app/Contents/MacOS/Blender && alias blender='/Applications/Blender.app/Contents/MacOS/Blender'
+_has /Applications/love.app/Contents/MacOS/love && alias love='/Applications/love.app/Contents/MacOS/love'
+_has csl && alias cm='csl multi && claude' cs='csl single && claude'
+_has panoptes && alias pano='panoptes'
+unfunction _has
 
 # ---------- functions ----------
 # svg [-c] [files...]: Quick Look (or Chrome with -c); no files → fzf pick under cwd

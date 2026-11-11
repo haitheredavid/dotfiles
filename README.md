@@ -18,7 +18,7 @@ stow -d ~/projects/dotfiles -t ~ --no-folding --adopt claude omp herdr && git -C
 
 ## Linux
 
-`linux/setup.sh` is the Linux counterpart of the Brewfile + `install.sh`, for Ubuntu 24.04. It installs apt packages, plus helix, fzf, gh and bun through mise, then runs `install.sh` and clones the oh-my-zsh prompt and line-editing addons. Run it as your user (it uses sudo for apt); it's idempotent.
+`linux/setup.sh` is the Linux counterpart of the Brewfile + `install.sh`, for Ubuntu 24.04. It installs apt packages, plus helix, fzf, gh, bun, terraform and the aws CLI through mise, then runs `install.sh` and clones the oh-my-zsh prompt and line-editing addons. Run it as your user (it uses sudo for apt); it's idempotent. `.zshrc` only defines tool aliases (`tf`, `mux`, `oc`, the app shortcuts…) and the terraform/tmuxinator plugins where their tool is installed, so a machine without one has no dead alias.
 
 `linux/Dockerfile` builds an image with all of it (copies this checkout, uncommitted changes included, to `~/projects/dotfiles` and, readable by everyone, to `/opt/dotfiles`). herdr-box builds on it and seeds homes that predate the image from `/opt/dotfiles`.
 

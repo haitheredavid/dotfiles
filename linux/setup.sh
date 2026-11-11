@@ -37,11 +37,12 @@ export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 # CLI tools without a usable apt package. fzf from mise: apt's 0.44 predates
 # `fzf --zsh`, so the oh-my-zsh fzf plugin would fall back to Debian example files.
+# terraform is a global default (`tf`, terraform plugin); repo mise.toml pins still win.
 if ! command -v mise >/dev/null; then
   say "installing mise"
   curl -fsSL https://mise.run | MISE_INSTALL_PATH="$HOME/.local/bin/mise" sh >/dev/null
 fi
-MISE_YES=1 mise use -g -q helix@latest fzf@latest gh@latest bun@latest >/dev/null
+MISE_YES=1 mise use -g -q helix@latest fzf@latest gh@latest bun@latest terraform@latest aws-cli@latest >/dev/null
 
 # Stow + oh-my-zsh + herdr/omp/tmux plugins. Idempotent; the plugin steps only run
 # where herdr/omp are installed, so run it every time.
