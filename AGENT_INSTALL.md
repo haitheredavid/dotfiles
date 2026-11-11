@@ -104,8 +104,6 @@ list them and **ASK** before proceeding.
 2. Run `<repo>/install.sh`. It:
    - backs up anything already at a package path to `~/.dotfiles-backup/<ts>/`,
    - runs `stow --no-folding --restow` (one symlink per file; real dirs like `~/.claude` stay real),
-   - links ctx-scaffold presets from `~/suffolk/ctx/presets` only if that checkout exists (it
-     usually won't on a new machine; that's fine),
    - clones oh-my-zsh to `~/.oh-my-zsh` (stock clone; do **not** run the official OMZ installer,
      it overwrites `.zshrc`),
    - clones tpm and installs the tmux plugins listed in `.tmux.conf`.

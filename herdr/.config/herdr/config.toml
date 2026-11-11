@@ -194,10 +194,10 @@ mauve = "#B08FD2"
 
 [ui]
 # Every pane, even a lone one, gets a frame: soft ember (accent) when focused, dimIce otherwise.
-# Dividers stay shared (no gaps) like tmux; agent labels sit on the borders.
+# Panes are visually separated by gaps (each has its own frame); agent labels sit on the borders.
 pane_borders = "always"
 pane_outer_borders = true
-pane_gaps = false
+pane_gaps = true
 show_agent_labels_on_pane_borders = true
 # No scrollbar column beside panes (omp and friends keep the full width).
 pane_scrollbars = false

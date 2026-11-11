@@ -49,6 +49,7 @@ jq comes first because `rel` needs it.
 | helix | editor (`hx`) | `d=$(mktemp -d) && curl -fsSL "$(rel helix-editor/helix 'aarch64-macos\.tar\.xz$')" \| tar -xJ -C "$d" && cp "$d"/helix-*/hx ~/.local/bin/ && mkdir -p ~/.config/helix/runtime && cp -R "$d"/helix-*/runtime/. ~/.config/helix/runtime/` |
 | herdr | terminal multiplexer for agents | `curl -fsSLo ~/.local/bin/herdr "$(rel herdrdev/herdr '^herdr-macos-aarch64$')" && chmod +x ~/.local/bin/herdr` |
 | bun | builds herdr sessionizer plugin (`install.sh` installs herdr plugins) | `curl -fsSL https://bun.sh/install \| bash` |
+| zmx | herdr scratchpads (ctx.herdr-flow `prefix+t`) | see [neurosnap/zmx](https://github.com/neurosnap/zmx) (Homebrew: `neurosnap/tap/zmx`) |
 | neovim | `$EDITOR` | `curl -fsSL "$(rel neovim/neovim '^nvim-macos-arm64\.tar\.gz$')" \| tar -xz -C ~/.local && ln -sf ~/.local/nvim-macos-arm64/bin/nvim ~/.local/bin/nvim` |
 | zoxide | omz zoxide plugin (`z`, `zi`) | `curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh \| sh` |
 | fzf | omz fzf plugin, tmux-fzf | `git clone --depth 1 https://github.com/junegunn/fzf ~/.fzf && ~/.fzf/install --bin && ln -sf ~/.fzf/bin/fzf ~/.local/bin/fzf` |

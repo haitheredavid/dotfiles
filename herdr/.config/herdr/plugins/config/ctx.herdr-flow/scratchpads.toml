@@ -1,0 +1,19 @@
+# Popup size for the scratchpad picker (cells or "N%").
+width = "80%"
+height = "80%"
+
+[[scratchpad]]
+name = "shell"            # login $SHELL in the focused pane's cwd
+
+[[scratchpad]]
+name = "notes"
+command = "hx ~/scratch.md"
+cwd = "~"
+
+# Bind a type directly with a herdr popup key:
+# [[keys.command]]
+# key = "prefix+alt+t"
+# type = "popup"
+# command = "/Users/david/projects/ctx-herdr/target/release/herdr-flow scratch attach notes"
+# width = "80%"
+# height = "80%"

@@ -6,6 +6,8 @@ brew "helix"
 brew "herdr"
 tap "oven-sh/bun"
 brew "oven-sh/bun/bun" # herdr sessionizer build; trust first: `brew trust --formula oven-sh/bun/bun`
+tap "neurosnap/tap"
+brew "neurosnap/tap/zmx" # herdr scratchpads (ctx.herdr-flow, prefix+t); trust first: `brew trust --formula neurosnap/tap/zmx`
 brew "neovim"        # $EDITOR
 brew "zoxide"
 brew "fzf"

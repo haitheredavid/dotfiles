@@ -8,6 +8,7 @@ configs and other shit.
 git clone git@github.com:haitheredavid/dotfiles.git ~/projects/dotfiles
 brew bundle --file ~/projects/dotfiles/Brewfile   # or DEPENDENCIES.md
 ~/projects/dotfiles/install.sh
+~/projects/dotfiles/install-local.sh              # links to local checkouts (ctx presets, herdr plugins); skips missing ones
 ```
 App replaced symlink with plain file → adopt back:
 
