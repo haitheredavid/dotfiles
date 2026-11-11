@@ -1,7 +1,7 @@
 # dotfiles
 
-macOS terminal + agent setup: zsh/oh-my-zsh/p10k, tmux, herdr, helix, ghostty, omp, Claude Code, agent skills. Managed via [GNU Stow](https://www.gnu.org/software/stow/); each top-level dir = package mirroring `$HOME`.
-
+configs and other shit.
+ 
 ## Install
 
 ```sh
@@ -9,9 +9,6 @@ git clone git@github.com:haitheredavid/dotfiles.git ~/projects/dotfiles
 brew bundle --file ~/projects/dotfiles/Brewfile   # or DEPENDENCIES.md
 ~/projects/dotfiles/install.sh
 ```
-
-`install.sh`: backs up conflicts to `~/.dotfiles-backup/<ts>/`, runs `stow --no-folding --restow`, clones oh-my-zsh + tpm, installs tmux plugins + herdr plugins (herdr-bar, sessionizer, ohmyzsh.shell; links local ctx.herdr-flow + panoptes if present). Idempotent. Agent-driven setup: paste [AGENT_INSTALL.md](AGENT_INSTALL.md).
-
 App replaced symlink with plain file → adopt back:
 
 ```sh

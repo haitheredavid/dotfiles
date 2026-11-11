@@ -19,7 +19,7 @@
     "border": "coldBorder",
     "borderAccent": "iceWhite",
     "borderMuted": "glacierBlue",
-    "success": "successGreen",
+    "success": "emberOrange",
     "error": "errorRed",
     "warning": "warningGold",
     "muted": "mutedIce",
