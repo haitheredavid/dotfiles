@@ -106,7 +106,9 @@ list them and **ASK** before proceeding.
    - runs `stow --no-folding --restow` (one symlink per file; real dirs like `~/.claude` stay real),
    - clones oh-my-zsh to `~/.oh-my-zsh` (stock clone; do **not** run the official OMZ installer,
      it overwrites `.zshrc`),
-   - clones tpm and installs the tmux plugins listed in `.tmux.conf`.
+   - clones tpm and installs the tmux plugins listed in `.tmux.conf`,
+   - installs the herdr, omp, and Claude Code plugins that are missing (Claude's: the ones
+     `enabledPlugins` in `settings.json` turns on, from the marketplaces it declares).
 3. If the login shell isn't zsh: `chsh -s /bin/zsh` (tell me first; it prompts for a password).
 
 ## Phase 6 — Post-install addons (no-Homebrew path only)
@@ -123,8 +125,9 @@ Check each, report what you found, and propose fixes rather than editing tracked
   `~/notes/de-vault` and `~/notes/haithere`. They are harmless until called; just mention them.
 - `claude/.claude/settings.json` hooks call `paseo` only when `PASEO_TERMINAL_ID` is set; no action
   needed unless I use paseo.
-- Claude plugins are not tracked; they reinstall from `enabledPlugins` in `settings.json` on the
-  next Claude Code launch (the `caveman` marketplace is declared there too).
+- Claude plugins are not tracked; `install.sh` installs the ones `enabledPlugins` in `settings.json`
+  turns on (the `caveman` and `claude-plugins-official` marketplaces are declared there too). The
+  `*-lsp` plugins need their language server on PATH (see `DEPENDENCIES.md`, Optional).
 
 ## Phase 8 — Verify
 

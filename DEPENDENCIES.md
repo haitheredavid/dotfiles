@@ -96,6 +96,8 @@ Mirrors the commented entries in `Brewfile`.
 |---|---|---|
 | ruff | helix python formatter/LSP | `uv tool install ruff` |
 | ty | helix python type checker | `uv tool install ty` |
+| pyright | Claude Code `pyright-lsp` plugin (omp turns it off in `omp/.omp/agent/lsp.json` and uses ty) | `npm i -g pyright` |
+| typescript-language-server | Claude Code `typescript-lsp` plugin | `npm i -g typescript-language-server typescript` |
 | lua-language-server | helix lua | `mkdir -p ~/.local/lua-language-server && curl -fsSL "$(rel LuaLS/lua-language-server 'darwin-arm64\.tar\.gz$')" \| tar -xz -C ~/.local/lua-language-server && printf '#!/bin/sh\nexec "$HOME/.local/lua-language-server/bin/lua-language-server" "$@"\n' > ~/.local/bin/lua-language-server && chmod +x ~/.local/bin/lua-language-server` |
 | terraform | helix hcl formatter, `tf` | `v=$(curl -fsSL https://checkpoint-api.hashicorp.com/v1/check/terraform \| jq -r .current_version) && d=$(mktemp -d) && curl -fsSLo "$d/tf.zip" "https://releases.hashicorp.com/terraform/$v/terraform_${v}_darwin_arm64.zip" && unzip -oq "$d/tf.zip" terraform -d ~/.local/bin` |
 | awscli | omz aws plugin | `curl -fsSLo /tmp/AWSCLIV2.pkg https://awscli.amazonaws.com/AWSCLIV2.pkg && sudo installer -pkg /tmp/AWSCLIV2.pkg -target /` (sudo) |

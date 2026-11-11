@@ -64,6 +64,29 @@ if command -v omp >/dev/null; then
   done
 fi
 
+# Claude Code plugins: install what claude/.claude/settings.json enables (the *-lsp ones
+# need their language server on PATH). Marketplaces come from its extraKnownMarketplaces,
+# so adding one leaves the stowed settings.json as it is; a plugin from a marketplace
+# declared nowhere is skipped. Skips what is already installed.
+if command -v claude >/dev/null && command -v jq >/dev/null; then
+  CLAUDE_SETTINGS="$HOME/.claude/settings.json"
+  claude_markets() { claude plugin marketplace list --json 2>/dev/null | jq -r '.[].name' || true; }
+  CLAUDE_MARKETS="$(claude_markets)"
+  while read -r name repo; do
+    grep -qxF "$name" <<<"$CLAUDE_MARKETS" || claude plugin marketplace add "$repo"
+  done < <(jq -r '.extraKnownMarketplaces // {} | to_entries[] | select(.value.source.source == "github") | "\(.key) \(.value.source.repo)"' "$CLAUDE_SETTINGS")
+  CLAUDE_MARKETS="$(claude_markets)"
+  CLAUDE_PLUGINS="$(claude plugin list --json 2>/dev/null | jq -r '.[].id' || true)"
+  for spec in $(jq -r '.enabledPlugins // {} | to_entries[] | select(.value) | .key' "$CLAUDE_SETTINGS"); do
+    grep -qxF "$spec" <<<"$CLAUDE_PLUGINS" && continue
+    if grep -qxF "${spec#*@}" <<<"$CLAUDE_MARKETS"; then
+      claude plugin install "$spec"
+    else
+      echo "claude plugin $spec: marketplace ${spec#*@} unknown; add it to extraKnownMarketplaces" >&2
+    fi
+  done
+fi
+
 # tmux plugin manager + the @plugin list in tmux/.tmux.conf (no running server needed)
 [[ -d "$HOME/.tmux/plugins/tpm" ]] || git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 "$HOME/.tmux/plugins/tpm/bin/install_plugins"

@@ -30,6 +30,8 @@ cask "font-meslo-lg-nerd-font"
 # Third-party tap formulae must be trusted first: `brew trust --formula <tap>/<formula>`
 # brew "ruff"                      # helix python formatter/LSP
 # brew "ty"                        # helix python type checker
+# brew "pyright"                   # Claude Code pyright-lsp plugin
+# brew "typescript-language-server" # Claude Code typescript-lsp plugin
 # brew "lua-language-server"       # helix lua
 # tap "hashicorp/tap"
 # brew "hashicorp/tap/terraform"   # helix hcl formatter, `tf`
