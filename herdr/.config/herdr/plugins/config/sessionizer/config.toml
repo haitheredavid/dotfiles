@@ -1,7 +1,7 @@
 # herdr sessionizer (prefix+f project, prefix+shift+f worktree, prefix+alt+f close).
 # No [layout]/[tabs]: new workspaces open a plain shell. Per-repo layouts: <repo>/.sessionizer/config.toml.
 [projects]
-roots = ["~/projects", "~/suffolk"]
+roots = ["~", "~/projects", "~/suffolk"] # "~": repos directly in home (e.g. ~/dotfiles)
 git_only = true
 depth = 1
 

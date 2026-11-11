@@ -1,0 +1,12 @@
+# herdr sessionizer layout for new dotfiles workspaces (prefix+f → dotfiles).
+# `omp -c` resumes the newest omp session saved for this folder.
+[layout]
+focus = "omp"
+
+[tabs.main]
+label = "dotfiles"
+
+[[tabs.main.panes]]
+id = "omp"
+title = "omp"
+command = "omp -c"
