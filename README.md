@@ -17,7 +17,7 @@ stow -d ~/projects/dotfiles -t ~ --no-folding --adopt claude omp herdr && git -C
 
 ## Theme
 
-dark-tundra everywhere, accent burnt orange `#D9773A`. Transparent backgrounds over ghostty `background-opacity 0.82`.
+dark-tundra everywhere, accent soft burnt orange `#B87048` (brighter `#D4915E` for cursor, active labels, git status). Transparent backgrounds over ghostty `background-opacity 0.82`.
 
 ## Keys
 

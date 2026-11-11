@@ -209,15 +209,15 @@ ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd history)
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=25          # stop suggesting once the line is long
 ZSH_AUTOSUGGEST_HISTORY_IGNORE=$'*\n*'      # never suggest a multi-line paste
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1             # skip the per-prompt widget rebind (faster)
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'      # dimmer grey, less shouty
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#667381' # dimIce, less shouty
 
 # ---------- completion behaviour ----------
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'  # case-insensitive, nothing fuzzier
 zstyle ':completion:*' menu select                          # arrow-key menu instead of a wall
 zstyle ':completion:*' list-dirs-first true
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*:descriptions' format '%F{yellow}%B%d%b%f'
-zstyle ':completion:*:warnings' format '%F{red}no matches%f'
+zstyle ':completion:*:descriptions' format '%F{#B87048}%B%d%b%f'   # soft ember group headers
+zstyle ':completion:*:warnings' format '%F{#D26B6B}no matches%f'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
 zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm -w'
@@ -226,6 +226,24 @@ zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm -w'
 _src_addon /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh "$ZSH/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 _src_addon /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh "$ZSH/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 unfunction _src_addon
+
+# dark-tundra syntax colors (same palette as herdr/tmux/omp): soft ember for runnable words.
+ZSH_HIGHLIGHT_STYLES[command]='fg=#B87048'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=#B87048'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=#B87048'
+ZSH_HIGHLIGHT_STYLES[suffix-alias]='fg=#B87048,underline'
+ZSH_HIGHLIGHT_STYLES[global-alias]='fg=#B87048'
+ZSH_HIGHLIGHT_STYLES[function]='fg=#B87048'
+ZSH_HIGHLIGHT_STYLES[precommand]='fg=#B87048,underline'
+ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=#D0B04D'
+ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#D26B6B'
+ZSH_HIGHLIGHT_STYLES[path]='fg=#E3E9F0,underline'
+ZSH_HIGHLIGHT_STYLES[globbing]='fg=#6C9FD6'
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=#D0B04D'
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=#D0B04D'
+ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=#D0B04D'
+ZSH_HIGHLIGHT_STYLES[comment]='fg=#667381'
+ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=#A3B0BF'
 
 # accept just the next word of a suggestion instead of the whole line
 bindkey '^[f' forward-word          # alt-f

@@ -1,11 +1,13 @@
 # Frantic Contrast (rainglow), dark only. Theme file: ~/.config/ghostty/themes/frantic-contrast
-# bg #0e1114 == tmux prefix+B opaque bg.
 theme = frantic-contrast
-# Accent: burnt orange (emberOrange, same as tmux/helix/omp). ANSI green (palette 2/10) stays
-# green for git/diff readability. These override the theme file's cursor colours.
-cursor-color = #D9773A
-cursor-text = #0e1114
-split-divider-color = #D9773A
+# Background: near-neutral black with just a whisper of ember warmth (theme default is cool #0e1114).
+background = #110F0E
+# Accent: soft burnt orange (emberOrange #B87048, same as tmux/helix/omp/herdr); cursor uses the
+# brighter emberLight #D4915E so it stays easy to find. ANSI green (palette 2/10) stays green for
+# git/diff readability. These override the theme file's cursor colours.
+cursor-color = #D4915E
+cursor-text = #110F0E
+split-divider-color = #B87048
 # Window chrome follows terminal colors (no longer switching with macOS appearance).
 window-theme = ghostty
 # Matches VS Code terminal font; Nerd Font glyphs used by tmux status bar.
