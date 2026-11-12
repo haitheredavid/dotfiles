@@ -2,6 +2,16 @@ modelRoles:
   default: claude-bridge/claude-opus-5-5
   plan: claude-bridge/claude-opus-5-5:high
   review: claude-bridge/claude-opus-5-5:high
+retry:
+  fallbackChains:
+    claude-bridge/claude-opus-5-5:
+      - openai-codex/gpt-6.1-terra
+    anthropic/claude-opus-5-5:
+      - openai-codex/gpt-6.1-terra
+  rateLimitWalksChain: true
+  usageAwareFallback: true
+  usageReservePct: 10
+  usageReservePolicy: auto
 task:
   agentModelOverrides:
     reviewer: "@review"
