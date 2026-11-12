@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Links to local checkouts on this machine (not part of install.sh). Each step is
-# skipped when its checkout is missing. Run after install.sh. Idempotent.
+# skipped when its checkout (or tool) is missing; omp-headroom is cloned if absent. Run after install.sh. Idempotent.
 set -euo pipefail
 
 # ctx-scaffold skill presets live in the ctx checkout (absolute link, so stow can't own it)
@@ -24,4 +24,16 @@ if command -v herdr >/dev/null; then
       herdr plugin link "${spec#*=}"
     fi
   done
+fi
+
+# omp-headroom: own fork, linked so edits in ~/projects/omp-headroom go live. Stays disabled
+# (install.sh disables it); `omp plugin enable omp-headroom` to opt in.
+if command -v omp >/dev/null && command -v bun >/dev/null; then
+  HEADROOM_DIR="$HOME/projects/omp-headroom"
+  [[ -d "$HEADROOM_DIR" ]] || { git clone https://github.com/haitheredavid/omp-headroom.git "$HEADROOM_DIR" &&
+    git -C "$HEADROOM_DIR" remote set-url --push origin git@github.com:haitheredavid/omp-headroom.git; }
+  if ! omp plugin list 2>/dev/null | grep -qF " omp-headroom@"; then
+    (cd "$HEADROOM_DIR" && bun install && omp plugin link .)
+    omp plugin disable omp-headroom
+  fi
 fi

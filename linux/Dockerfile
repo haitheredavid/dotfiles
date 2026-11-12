@@ -3,7 +3,6 @@
 # Build from the repo root; it copies this checkout (uncommitted changes included):
 #   docker build -f linux/Dockerfile -t dotfiles .
 #   docker run --rm -it dotfiles
-# herdr-box builds its image on top of this one.
 FROM ubuntu:24.04
 ARG USER=david
 ENV LANG=C.UTF-8 DEBIAN_FRONTEND=noninteractive
@@ -15,15 +14,10 @@ RUN apt-get update \
     && useradd -m -u 1000 -s /bin/bash "$USER" \
     && echo "$USER ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/dotfiles \
     && chmod 440 /etc/sudoers.d/dotfiles
-# Also at /opt/dotfiles, readable by everyone (the checkout keeps its modes, and some
-# app-written files are 0600): images built on this one seed homes that predate it
-# from there, whatever has been pushed.
-COPY . /opt/dotfiles
-RUN chmod -R a+rX /opt/dotfiles
-COPY --chown=1000:1000 . /home/$USER/projects/dotfiles
+COPY --chown=1000:1000 . /home/$USER/dotfiles
 USER $USER
 WORKDIR /home/$USER
-RUN projects/dotfiles/linux/setup.sh \
+RUN dotfiles/linux/setup.sh \
     && sudo usermod -s /usr/bin/zsh "$USER" \
     && sudo rm -rf /var/lib/apt/lists/*
 CMD ["zsh", "-l"]

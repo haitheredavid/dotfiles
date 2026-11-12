@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # Set up these dotfiles on Ubuntu 24.04 for the current (non-root) user: the Linux
 # counterpart of Brewfile + install.sh. Idempotent; needs passwordless sudo for apt.
-# Used by linux/Dockerfile, and by machines that clone this repo (herdr-box runs it
-# at every boot).
+# Used by linux/Dockerfile, and by machines that clone this repo.
 set -euo pipefail
 
 DOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

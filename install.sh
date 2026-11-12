@@ -54,12 +54,10 @@ if command -v omp >/dev/null; then
     omp-agent-sdk-bridge=git:github.com/poog26/omp-agent-sdk-bridge; do
     grep -qF " ${spec%%=*}@" <<<"$OMP_PLUGINS" || omp plugin install "${spec#*=}"
   done
-  # headroom: own fork, linked so edits in ~/projects/omp-headroom go live
-  HEADROOM_DIR="$HOME/projects/omp-headroom"
-  [[ -d "$HEADROOM_DIR" ]] || { git clone https://github.com/haitheredavid/omp-headroom.git "$HEADROOM_DIR" &&
-    git -C "$HEADROOM_DIR" remote set-url --push origin git@github.com:haitheredavid/omp-headroom.git; }
-  grep -qF " omp-headroom@" <<<"$OMP_PLUGINS" || { (cd "$HEADROOM_DIR" && bun install && omp plugin link .); }
+  # headroom is linked from a local checkout by install-local.sh; disabled here only once present
+  OMP_PLUGINS="$(omp plugin list 2>/dev/null || true)"
   for off in @kryoz/caveman-plugin omp-headroom; do
+    grep -qF "$off" <<<"$OMP_PLUGINS" || continue
     grep -qF " $off@" <<<"$OMP_PLUGINS" || omp plugin disable "$off"
   done
 fi

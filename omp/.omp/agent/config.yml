@@ -26,20 +26,19 @@ display:
   showTokenUsage: true
   showTurnTime: true
   cacheMissMarker: false
-  subagentLivePreview: false
+  subagentLivePreview: true
   hideToolActivity: true
+  shimmer: kitt
 extensionRenderers:
   assistantText: true
 statusLine:
   preset: custom
   leftSegments:
     - model
-    - time_spent
-    - cache_hit
     - path
     - git
   rightSegments:
-    - status
+    - context_pct
   separator: pipe
   transparent: true
   contextLine: percentage
