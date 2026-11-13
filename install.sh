@@ -51,7 +51,8 @@ if command -v omp >/dev/null; then
   done
   # npm/git plugins: "<package name>=<install source>" (source defaults to the name)
   for spec in cc-safety-net omp-enforce-uv @kryoz/caveman-plugin @estebanforge/pi-ask-codex \
-    omp-agent-sdk-bridge=git:github.com/poog26/omp-agent-sdk-bridge; do
+    omp-agent-sdk-bridge=git:github.com/poog26/omp-agent-sdk-bridge \
+    omp-extras=git:github.com/haitheredavid/omp-extras; do
     grep -qF " ${spec%%=*}@" <<<"$OMP_PLUGINS" || omp plugin install "${spec#*=}"
   done
   # headroom is linked from a local checkout by install-local.sh; disabled here only once present

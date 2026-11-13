@@ -37,3 +37,12 @@ if command -v omp >/dev/null && command -v bun >/dev/null; then
     omp plugin disable omp-headroom
   fi
 fi
+
+# omp-extras: own extensions, linked so edits in ~/projects/omp-extras go live. install.sh
+# installs it from git first; the link replaces that copy (`plugin link` can't overwrite a directory).
+if command -v omp >/dev/null && command -v bun >/dev/null && [[ -d "$HOME/projects/omp-extras" ]]; then
+  if [[ ! -L "$HOME/.omp/plugins/node_modules/omp-extras" ]]; then
+    omp plugin list 2>/dev/null | grep -qF " omp-extras@" && omp plugin uninstall omp-extras
+    (cd "$HOME/projects/omp-extras" && bun install && omp plugin link .)
+  fi
+fi
