@@ -1,0 +1,27 @@
+# herdr-extras.track in dark-tundra, matching Helix (dark_tundra), omp, tmux and herdr's own theme.
+# Palette names as in helix/.config/helix/themes/dark_tundra.toml.
+
+background = "#0B0F12"   # frostBlack: fills mix toward it (Ghostty's transparent bg is near it)
+dim = "#667381"          # dimIce
+grid = "#2A3A46"         # coldBorder
+accent = "#B87048"       # emberOrange
+error = "#D26B6B"        # errorRed
+fill_alpha = 0.3
+
+# Cold to ember: blue, cyan, successGreen, warningGold, emberLight, emberOrange. Agents spread
+# along it (two agents: blue and ember); HEAT reads cold when idle, ember when working.
+series = ["#6C9FD6", "#5FBFCF", "#5FB487", "#D0B04D", "#D4915E", "#B87048"]
+series_from = 0.0
+heat_blocked = "#D26B6B" # errorRed
+
+[status]
+working = "#5FB487"      # successGreen
+blocked = "#D26B6B"      # errorRed
+done = "#6C9FD6"         # blue
+idle = "#667381"         # dimIce
+unknown = "#2A3A46"      # coldBorder
+
+[node]
+created = "#D4915E"      # emberLight
+seen = "#E3B48A"         # emberPale
+closed = "#667381"       # dimIce
