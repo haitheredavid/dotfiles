@@ -15,7 +15,9 @@ for pkg in "${PACKAGES[@]}"; do
     rel="${src#"$DOT/$pkg/"}"
     dst="$HOME/$rel"
     [[ -e "$dst" || -L "$dst" ]] || continue
-    [[ -L "$dst" && "$(readlink "$dst")" == *"/${DOT##*/}/$pkg/$rel" ]] && continue
+    # Ours only if it resolves to this checkout's file: links into another checkout
+    # (same directory name, different location) are backed up like anything else.
+    [[ -L "$dst" && "$(readlink -f "$dst")" == "$(readlink -f "$src")" ]] && continue
     mkdir -p "$(dirname "$BACKUP/$rel")"
     mv "$dst" "$BACKUP/$rel"
     echo "backup  ~/$rel -> $BACKUP/$rel"
