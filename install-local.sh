@@ -24,6 +24,19 @@ if command -v herdr >/dev/null; then
       herdr plugin link "${spec#*=}"
     fi
   done
+  # herdr-extras: own plugins, linked so edits in ~/projects/herdr-extras go live. install.sh installs
+  # them from GitHub first; the link replaces that copy. `plugin link` runs no build, so build here.
+  EXTRAS="$HOME/projects/herdr-extras"
+  if [[ -d "$EXTRAS" ]] && command -v cargo >/dev/null; then
+    for name in track; do
+      dir="$EXTRAS/plugins/$name" id="herdr-extras.$name"
+      [[ -x "$dir/target/release/herdr-$name" ]] || (cd "$dir" && cargo build --release)
+      line=$(grep "^- $id " <<<"$HERDR_PLUGINS" || true)
+      [[ $line == *"[local:$dir]"* ]] && continue
+      [[ -n $line ]] && herdr plugin uninstall "$id"
+      herdr plugin link "$dir"
+    done
+  fi
 fi
 
 # omp-headroom: own fork, linked so edits in ~/projects/omp-headroom go live. Stays disabled

@@ -37,6 +37,10 @@ if command -v herdr >/dev/null; then
   for spec in herdr-bar=jeffarese/herdr-bar sessionizer=andrewchng/herdr-sessionizer ohmyzsh.shell=robbyrussell/herdr-ohmyzsh; do
     grep -q "^- ${spec%%=*} " <<<"$HERDR_PLUGINS" || herdr plugin install "${spec#*=}" --yes
   done
+  # herdr-extras plugins build with cargo during install; skipped without it.
+  if command -v cargo >/dev/null; then
+    grep -q "^- herdr-extras.track " <<<"$HERDR_PLUGINS" || herdr plugin install haitheredavid/herdr-extras/plugins/track --yes
+  fi
 fi
 
 # omp plugins (state lives in ~/.omp/plugins, not stowed). Skips what is already installed.
