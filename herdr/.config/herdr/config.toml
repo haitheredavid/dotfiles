@@ -111,12 +111,12 @@ type = "plugin_action"
 command = "ctx.herdr-flow.town-popup"
 description = "construction town (popup)"
 
-# Agent track (herdr-extras.track): alt+g opens the timeline as a split below, alt+shift+g as a popup.
+# Agent track (herdr-extras.track): alt+g opens the timeline as a side panel, alt+shift+g as a popup.
 [[keys.command]]
 key = "prefix+alt+g"
 type = "plugin_action"
 command = "herdr-extras.track.open"
-description = "agent track (split)"
+description = "agent track (side panel)"
 
 [[keys.command]]
 key = "prefix+alt+shift+g"
